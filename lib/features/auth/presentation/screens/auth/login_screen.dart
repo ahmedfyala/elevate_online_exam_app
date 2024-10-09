@@ -1,11 +1,13 @@
 import 'package:elevate_online_exam_app/core/di/di.dart';
-import 'package:elevate_online_exam_app/core/error_handeling/AppExceptions.dart';
+import 'package:elevate_online_exam_app/core/error_handeling/handle_error.dart';
 import 'package:elevate_online_exam_app/core/functions/show_hide_loading.dart';
 import 'package:elevate_online_exam_app/features/auth/presentation/view_models/login_states.dart';
 import 'package:elevate_online_exam_app/features/auth/presentation/view_models/login_viewmodel.dart';
 import 'package:elevate_online_exam_app/features/auth/presentation/widgets/auth/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../view_models/login_actions.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -33,54 +35,33 @@ class LoginScreen extends StatelessWidget {
           children: [
             BlocConsumer<LoginViewModel, LogInScreenState>(
                 listenWhen: (previous, current) {
+              // Hide loading for transitions
               if (previous is LoadingState || current is ErrorState) {
                 hideLoading(context);
               }
-              if (current is! InitialState) {
-                return true;
-              } else {
-                return false;
-              }
+              return current is! InitialState;
             }, buildWhen: (previous, current) {
               return current is InitialState;
             }, builder: (context, state) {
-              switch (state) {
-                case InitialState():
-                default:
-                  {
-                    return LoginForm(
-                        emailController: loginViewModel.emailController,
-                        formKey: loginViewModel.formKey,
-                        passwordController: loginViewModel.passwordController,
-                        login: loginViewModel.login);
-                  }
+              if (state is InitialState) {
+                return LoginForm(
+                  emailController: loginViewModel.emailController,
+                  formKey: loginViewModel.formKey,
+                  passwordController: loginViewModel.passwordController,
+                  login: () => loginViewModel.doAction(
+                      LoginAction()), // Pass an instance of LoginAction
+                );
               }
+              return Container(); // Return an empty container for non-initial states
             }, listener: (context, state) {
-              switch (state) {
-                case LoadingState():
-                  {
-                    showLoading(context, 'Logging in...');
-                    break;
-                  }
-                case ErrorState():
-                  {
-                    var exception = state.exception;
-                    String? message = 'something went wrong';
-                    if (exception is NoInternetException) {
-                      message = 'No internet connection';
-                    } else if (exception is ServerError) {
-                      message = exception.message;
-                    }
-                    showLoading(context, message ?? '');
-                    break;
-                  }
-                case SuccessState():
-                  {
-                    showLoading(context, state.appUser!.token);
-                    break;
-                  }
-                default:
-                  {}
+              if (state is LoadingState) {
+                showLoading(context, 'Logging in...');
+              } else if (state is ErrorState) {
+                var exception = state.exception;
+                String? message = errorStateHandler(exception!);
+                showLoading(context, message ?? '');
+              } else if (state is SuccessState) {
+                showLoading(context, state.appUser!.token);
               }
             }),
           ],

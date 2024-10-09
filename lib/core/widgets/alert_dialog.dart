@@ -9,6 +9,9 @@ class CustomAlertDialog extends StatelessWidget {
       content: Row(
         children: [
           const CircularProgressIndicator(),
+          const SizedBox(
+            width: 16,
+          ),
           Text(text!),
         ],
       ),
