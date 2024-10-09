@@ -1,3 +1,4 @@
+import 'package:elevate_online_exam_app/core/constants/color.dart';
 import 'package:flutter/material.dart';
 
 class CustomAuthButton extends StatelessWidget {
@@ -11,7 +12,7 @@ class CustomAuthButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.blue.shade900, // Text color
+        backgroundColor: AppColor.primaryColor, // Text color
         minimumSize:
             Size(double.infinity, 60), // Make the button expand horizontally
         shape: RoundedRectangleBorder(

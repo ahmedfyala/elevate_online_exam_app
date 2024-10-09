@@ -1,8 +1,10 @@
 import 'package:elevate_online_exam_app/core/helpers/validations.dart';
+import 'package:elevate_online_exam_app/core/routing/routes.dart';
 import 'package:elevate_online_exam_app/core/widgets/custom_auth_button.dart';
 import 'package:elevate_online_exam_app/core/widgets/custom_text_form_feild.dart';
 import 'package:elevate_online_exam_app/features/auth/presentation/widgets/auth/no_account_row.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm(
@@ -77,14 +79,21 @@ class LoginForm extends StatelessWidget {
             SizedBox(
               height: 48,
             ),
-            CustomAuthButton(text: 'Login', onPressed: login),
+            CustomAuthButton(
+                text: 'Login',
+                onPressed: () {
+                  print('Login button pressed');
+                  login();
+                }),
             SizedBox(
               height: 16,
             ),
             NoAccountRow(
                 content: 'Don\'t have an account?',
                 actionText: 'Sign up',
-                onPressed: () {}),
+                onPressed: () {
+                  context.go(Routes.registerScreen);
+                }),
           ],
         ),
       ),

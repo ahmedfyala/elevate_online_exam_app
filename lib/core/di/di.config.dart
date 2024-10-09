@@ -24,7 +24,10 @@ import '../../features/auth/data/repository/auth_repository.dart' as _i104;
 import '../../features/auth/domain/contract/repository/auth_repo.dart' as _i331;
 import '../../features/auth/presentation/view_models/login_viewmodel.dart'
     as _i138;
+import '../../features/auth/presentation/view_models/register_viewmodel.dart'
+    as _i260;
 import '../../features/auth/usecases/login_usecase.dart' as _i387;
+import '../../features/auth/usecases/register_usecase.dart' as _i737;
 import 'di_module.dart' as _i211;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -54,8 +57,12 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i387.LoginUseCase>(
         () => _i387.LoginUseCase(gh<_i331.AuthRepo>()));
+    gh.factory<_i737.RegisterUseCase>(
+        () => _i737.RegisterUseCase(gh<_i331.AuthRepo>()));
     gh.factory<_i138.LoginViewModel>(
         () => _i138.LoginViewModel(gh<_i387.LoginUseCase>()));
+    gh.factory<_i260.RegisterViewModel>(
+        () => _i260.RegisterViewModel(gh<_i737.RegisterUseCase>()));
     return this;
   }
 }
