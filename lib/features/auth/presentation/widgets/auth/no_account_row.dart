@@ -1,4 +1,4 @@
-import 'package:elevate_online_exam_app/core/constants/cokor.dart';
+import 'package:elevate_online_exam_app/core/constants/color.dart';
 import 'package:flutter/material.dart';
 
 class NoAccountRow extends StatelessWidget {
