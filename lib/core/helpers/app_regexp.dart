@@ -50,4 +50,8 @@ class AppRegExp {
   static bool hasMinLength(String password) {
     return password.length >= 6;
   }
+
+  static bool isUsernameValid(String username) {
+    return RegExp(r"^[a-zA-Z0-9_]{3,20}$").hasMatch(username);
+  }
 }
