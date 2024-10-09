@@ -12,7 +12,7 @@ import '../../view_models/login_actions.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  LoginViewModel loginViewModel = getIt.get<LoginViewModel>();
+  final LoginViewModel loginViewModel = getIt.get<LoginViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,36 +34,40 @@ class LoginScreen extends StatelessWidget {
         body: Column(
           children: [
             BlocConsumer<LoginViewModel, LogInScreenState>(
-                listenWhen: (previous, current) {
-              // Hide loading for transitions
-              if (previous is LoadingState || current is ErrorState) {
-                hideLoading(context);
-              }
-              return current is! InitialState;
-            }, buildWhen: (previous, current) {
-              return current is InitialState;
-            }, builder: (context, state) {
-              if (state is InitialState) {
-                return LoginForm(
-                  emailController: loginViewModel.emailController,
-                  formKey: loginViewModel.formKey,
-                  passwordController: loginViewModel.passwordController,
-                  login: () => loginViewModel.doAction(
-                      LoginAction()), // Pass an instance of LoginAction
-                );
-              }
-              return Container(); // Return an empty container for non-initial states
-            }, listener: (context, state) {
-              if (state is LoadingState) {
-                showLoading(context, 'Logging in...');
-              } else if (state is ErrorState) {
-                var exception = state.exception;
-                String? message = errorStateHandler(exception!);
-                showLoading(context, message ?? '');
-              } else if (state is SuccessState) {
-                showLoading(context, state.appUser!.token);
-              }
-            }),
+              listenWhen: (previous, current) {
+                // Hide loading for transitions
+                if (previous is LoadingState || current is ErrorState) {
+                  hideLoading(context);
+                }
+                return current is! InitialState;
+              },
+              buildWhen: (previous, current) {
+                return current is InitialState;
+              },
+              builder: (context, state) {
+                if (state is InitialState) {
+                  return LoginForm(
+                    emailController: loginViewModel.emailController,
+                    formKey: loginViewModel.formKey,
+                    passwordController: loginViewModel.passwordController,
+                    login: () => loginViewModel.doAction(
+                        LoginAction()), // Pass an instance of LoginAction
+                  );
+                }
+                return Container(); // Return an empty container for non-initial states
+              },
+              listener: (context, state) {
+                if (state is LoadingState) {
+                  showLoading(context, 'Logging in...');
+                } else if (state is ErrorState) {
+                  var exception = state.exception;
+                  String? message = errorStateHandler(exception!);
+                  showLoading(context, message ?? '');
+                } else if (state is SuccessState) {
+                  showLoading(context, state.appUser!.token);
+                }
+              },
+            ),
           ],
         ),
       ),

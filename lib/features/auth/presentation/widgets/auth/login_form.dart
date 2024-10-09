@@ -77,7 +77,12 @@ class LoginForm extends StatelessWidget {
             SizedBox(
               height: 48,
             ),
-            CustomAuthButton(text: 'Login', onPressed: login),
+            CustomAuthButton(
+                text: 'Login',
+                onPressed: () {
+                  print('Login button pressed');
+                  login();
+                }),
             SizedBox(
               height: 16,
             ),

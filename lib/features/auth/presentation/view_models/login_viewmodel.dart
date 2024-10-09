@@ -17,6 +17,7 @@ class LoginViewModel extends Cubit<LogInScreenState> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+
   void doAction(AuthActions action) {
     if (action is LoginAction) {
       _login();
@@ -26,19 +27,23 @@ class LoginViewModel extends Cubit<LogInScreenState> {
   void _login() async {
     emit(const LoadingState());
     if (formKey.currentState!.validate()) {
-      var result = await _loginUseCase.invoke(
-          emailController.text, passwordController.text);
-      switch (result) {
-        case Success<AppUser>():
+      try {
+        var result = await _loginUseCase.invoke(
+            emailController.text, passwordController.text);
+
+        // Use if-else instead of switch for result handling
+        if (result is Success<AppUser>) {
           emit(SuccessState(result.data));
-          break;
-        case Fail<AppUser>():
+        } else if (result is Fail<AppUser>) {
           emit(ErrorState(result.exception));
-          break;
-        case Loading<AppUser>():
+        } else {
           emit(const LoadingState());
-          break;
+        }
+      } catch (e) {
+        emit(ErrorState(e as Exception?));
       }
+    } else {
+      print('Form validation failed'); // Debugging
     }
   }
 }

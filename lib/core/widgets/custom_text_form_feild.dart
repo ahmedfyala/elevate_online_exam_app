@@ -8,11 +8,13 @@ class CustomTextFormField extends StatelessWidget {
       required this.keyboardType,
       required this.controller,
       required this.validator});
+
   final String? labelText;
   final String? hintText;
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -24,28 +26,38 @@ class CustomTextFormField extends StatelessWidget {
         ),
         hintText: hintText,
         hintStyle: TextStyle(
-          color:
-              Colors.grey.shade400, // Slightly lighter shade for the hint text
+          color: Colors.grey.shade400,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
-            color: Colors.grey, // Border color when the field is enabled
+            color: Colors.grey,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
-            color: Colors.grey, // Border color when the field is focused
+            color: Colors.grey,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(
+            color: Colors.red,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(
+            color: Colors.red,
           ),
         ),
       ),
       validator: validator,
       keyboardType: keyboardType,
       style: TextStyle(
-        color: Colors.black, // Text input color
+        color: Colors.black,
       ),
     );
-    ;
   }
 }
