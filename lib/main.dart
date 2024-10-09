@@ -1,7 +1,10 @@
-import 'package:elevate_online_exam_app/core/routing/app_router.dart';
+import 'package:elevate_online_exam_app/features/auth/presentation/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'core/di/di.dart';
+
 void main() {
+  configureDependencies();
   runApp(const MyApp());
 }
 
@@ -11,10 +14,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerDelegate: AppRouter.router.routerDelegate,
-      routeInformationParser: AppRouter.router.routeInformationParser,
-      routeInformationProvider: AppRouter.router.routeInformationProvider,
+    return MaterialApp(
+      home: LoginScreen(),
     );
   }
 }
