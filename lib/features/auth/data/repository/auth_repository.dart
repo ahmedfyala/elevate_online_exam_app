@@ -1,4 +1,5 @@
 import 'package:elevate_online_exam_app/core/error_handeling/Result.dart';
+import 'package:elevate_online_exam_app/features/auth/data/api/model/request/register_request.dart';
 import 'package:elevate_online_exam_app/features/auth/data/datasource/contracts/auth_datasource.dart';
 import 'package:elevate_online_exam_app/features/auth/domain/contract/repository/auth_repo.dart';
 import 'package:elevate_online_exam_app/features/auth/domain/model/app_user.dart';
@@ -16,15 +17,9 @@ class AuthRepositoryImpl implements AuthRepo {
   }
 
   @override
-  Future<Result<AppUser>> register(
-      String userName,
-      String firstName,
-      String lastName,
-      String email,
-      String password,
-      String rePassword,
-      String phone) async {
+  Future<Result<AppUser>> register(RegisterRequest registerRequest) async {
     return authOnlineDataSource.register(
-        userName, firstName, lastName, email, password, rePassword, phone);
+      registerRequest,
+    );
   }
 }

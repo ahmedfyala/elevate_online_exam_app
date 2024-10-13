@@ -1,15 +1,12 @@
 import 'package:elevate_online_exam_app/core/helpers/validations.dart';
-import 'package:elevate_online_exam_app/core/routing/routes.dart';
 import 'package:elevate_online_exam_app/core/widgets/custom_auth_button.dart';
 import 'package:elevate_online_exam_app/core/widgets/custom_text_form_feild.dart';
 import 'package:elevate_online_exam_app/features/auth/presentation/widgets/auth/no_account_row.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class RegisterForm extends StatelessWidget {
   RegisterForm({
     super.key,
-    required this.onPressed,
     required this.usernameController,
     required this.firstNameController,
     required this.lastNameController,
@@ -18,10 +15,17 @@ class RegisterForm extends StatelessWidget {
     required this.confirmPasswordController,
     required this.phoneNumberController,
     required this.formKey,
+    required this.onGoToRegisterPressed,
+    this.isPasswordVisible,
+    this.showPassword,
+    this.showRePassword,
+    this.isRePasswordVisible,
+    required this.goToHome,
+    required this.color,
+    required this.onChanged,
   });
 
   final GlobalKey<FormState> formKey;
-  final void Function() onPressed;
   final TextEditingController usernameController;
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
@@ -29,12 +33,21 @@ class RegisterForm extends StatelessWidget {
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
   final TextEditingController phoneNumberController;
+  final void Function() onGoToRegisterPressed;
+  final bool? isPasswordVisible;
+  final void Function()? showPassword;
+  final void Function()? showRePassword;
+  final bool? isRePasswordVisible;
+  final void Function()? goToHome;
+  final Color color;
+  final void Function() onChanged;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Form(
+        onChanged: onChanged,
         key: formKey,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -93,6 +106,9 @@ class RegisterForm extends StatelessWidget {
                 hintText: 'Enter password',
                 controller: passwordController,
                 keyboardType: TextInputType.visiblePassword,
+                isPasswordVisible:
+                    isPasswordVisible!, // Correct visibility state
+                showPassword: showPassword, // Toggle function
                 validator: (value) {
                   return Validations.validatePassword(context, value);
                 },
@@ -102,10 +118,16 @@ class RegisterForm extends StatelessWidget {
                 labelText: 'Confirm password',
                 hintText: 'Confirm password',
                 controller: confirmPasswordController,
+                isPasswordVisible:
+                    isRePasswordVisible!, // Correct visibility state
+                showPassword: showRePassword, // Toggle function
                 keyboardType: TextInputType.visiblePassword,
                 validator: (value) {
                   return Validations.validateConfirmPassword(
-                      context, passwordController.text, value);
+                    context,
+                    passwordController.text,
+                    value,
+                  );
                 },
               ),
               const SizedBox(height: 24),
@@ -123,19 +145,18 @@ class RegisterForm extends StatelessWidget {
               ),
               const SizedBox(height: 48),
               CustomAuthButton(
+                color: color,
                 text: 'Signup',
                 onPressed: () {
                   print('Signup button pressed');
-                  onPressed();
+                  goToHome!();
                 },
               ),
               const SizedBox(height: 16),
               NoAccountRow(
                   content: 'Already have an account',
                   actionText: 'Login',
-                  onPressed: () {
-                    context.go(Routes.loginScreen);
-                  })
+                  onPressed: onGoToRegisterPressed)
             ],
           ),
         ),

@@ -4,5 +4,12 @@ class AppUser {
   String? lastName;
   String? email;
   String? token;
-  AppUser({this.firstName, this.lastName, this.email, this.token, this.id});
+  String? phoneNumber;
+  AppUser(
+      {this.firstName,
+      this.lastName,
+      this.email,
+      this.token,
+      this.id,
+      this.phoneNumber});
 }
