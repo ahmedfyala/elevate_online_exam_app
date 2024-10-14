@@ -1,5 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:elevate_online_exam_app/core/constants/color.dart';
+import 'package:elevate_online_exam_app/core/constants/app_color.dart';
 import 'package:elevate_online_exam_app/core/di/di.dart';
 import 'package:elevate_online_exam_app/core/error_handeling/handle_error.dart';
 import 'package:elevate_online_exam_app/core/functions/show_awesome_dialoge.dart';
@@ -53,13 +53,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 showAwesomeDialog(context,
                     title: 'Success Register',
                     desc: 'You have been Successfully Registered', onOk: () {
-                  context.go(Routes.registerScreen);
+                  context.go(Routes.homeScreen);
                 }, dialogType: DialogType.success);
                 break;
               case NavigateToHomeState():
-                context.go(Routes.registerScreen);
+                context.go(Routes.homeScreen);
                 break;
-
+              case GoToRegisterState():
+                context.go(Routes.registerScreen);
               default:
             }
           },

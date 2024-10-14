@@ -1,5 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:elevate_online_exam_app/core/constants/color.dart';
+import 'package:elevate_online_exam_app/core/constants/app_color.dart';
 import 'package:elevate_online_exam_app/core/di/di.dart';
 import 'package:elevate_online_exam_app/core/error_handeling/handle_error.dart';
 import 'package:elevate_online_exam_app/core/functions/show_awesome_dialoge.dart';
