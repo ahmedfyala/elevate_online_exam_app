@@ -19,7 +19,8 @@ abstract class Validations {
     return null;
   }
 
-  static String? validatePhoneNumber(BuildContext context, String? phoneNumber) {
+  static String? validatePhoneNumber(
+      BuildContext context, String? phoneNumber) {
     if (phoneNumber!.isEmpty || !AppRegExp.isPhoneNumberValid(phoneNumber)) {
       return '🔴Phone number is required!';
     }
@@ -33,8 +34,10 @@ abstract class Validations {
     return null;
   }
 
-  static String? validateConfirmPassword(BuildContext context, String? password, String? confirmPassword) {
-    if (confirmPassword!.isEmpty || !AppRegExp.isPasswordValid(confirmPassword)) {
+  static String? validateConfirmPassword(
+      BuildContext context, String? password, String? confirmPassword) {
+    if (confirmPassword!.isEmpty ||
+        !AppRegExp.isPasswordValid(confirmPassword)) {
       return '🔴Confirm Password is required!';
     } else if (password != confirmPassword) {
       return '🔴Password and Confirm Password must be same!';
@@ -59,6 +62,13 @@ abstract class Validations {
   static String? validateCardCCV(BuildContext context, String? ccv) {
     if (ccv!.isEmpty || !AppRegExp.isCardCVVValid(ccv)) {
       return '🔴CCV is required!';
+    }
+    return null;
+  }
+
+  static String? validateUsername(BuildContext context, String? username) {
+    if (username!.isEmpty || !AppRegExp.isUsernameValid(username)) {
+      return '🔴Username is required!';
     }
     return null;
   }

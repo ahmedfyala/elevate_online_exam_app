@@ -12,6 +12,7 @@ class _RetrofitClient implements RetrofitClient {
   _RetrofitClient(
     this._dio, {
     this.baseUrl,
+    this.errorLogger,
   }) {
     baseUrl ??= 'https://exam.elevateegy.com/';
   }
@@ -19,6 +20,8 @@ class _RetrofitClient implements RetrofitClient {
   final Dio _dio;
 
   String? baseUrl;
+
+  final ParseErrorLogger? errorLogger;
 
   @override
   Future<AuthResponse> login(Map<String, dynamic> body) async {
@@ -48,18 +51,19 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = AuthResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
   }
 
   @override
-  Future<AuthResponse> register(Map<String, dynamic> body) async {
+  Future<AuthResponse> register(RegisterRequest body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(body.toJson());
     final _options = _setStreamType<AuthResponse>(Options(
       method: 'POST',
       headers: _headers,
@@ -81,6 +85,7 @@ class _RetrofitClient implements RetrofitClient {
     try {
       _value = AuthResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;

@@ -11,7 +11,7 @@ Future<Result<T>> executeApi<T>(Future<Result<T>> Function() apiCall) async {
     var result = await apiCall.call();
     return result;
   } on DioException catch (ex) {
-    return Fail(ex);
+    return Fail(ServerError.handleDioError(ex));
   } on TimeoutException catch (ex) {
     return Fail(NoInternetException());
   } on IOException catch (ex) {
