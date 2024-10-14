@@ -2,51 +2,43 @@ import 'dart:async';
 
 import 'package:elevate_online_exam_app/core/api_executer/api_extensions.dart';
 import 'package:elevate_online_exam_app/core/error_handeling/Result.dart';
-import 'package:elevate_online_exam_app/features/auth/data/api/api_manger.dart';
 import 'package:elevate_online_exam_app/features/auth/data/api/model/request/register_request.dart';
+import 'package:elevate_online_exam_app/features/auth/data/api/retrofit_client.dart';
 import 'package:elevate_online_exam_app/features/auth/data/datasource/contracts/auth_datasource.dart';
 import 'package:elevate_online_exam_app/features/auth/domain/model/app_user.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: AuthOnlineDataSource)
 class AuthOnlineDatasourceImpl extends AuthOnlineDataSource {
-  ApiManger apiManger;
-  AuthOnlineDatasourceImpl(this.apiManger);
+  RetrofitClient retrofitClient;
+  AuthOnlineDatasourceImpl(this.retrofitClient);
   @override
   Future<Result<AppUser>> login(String email, String password) async {
     return executeApi<AppUser>(
       () async {
-        var result = await apiManger.login(email, password);
-        return Success(data: result.toAppUser());
+        var result = await retrofitClient.login({
+          "email": email,
+          "password": password,
+        });
+        var appUser = AppUser(
+          email: email,
+          token: result.token,
+        );
+        return Success(data: appUser);
       },
     );
   }
 
   @override
-  Future<Result<AppUser>> register(
-      String userName,
-      String firstName,
-      String lastName,
-      String email,
-      String password,
-      String rePassword,
-      String phone) {
+  Future<Result<AppUser>> register(RegisterRequest registerRequest) async {
     return executeApi<AppUser>(
       () async {
-        var requestBody = RegisterRequest(
-          username: userName,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-          rePassword: rePassword,
-          phone: phone,
-        );
-        var result = await apiManger.register(requestBody);
+        var result = await retrofitClient.register(registerRequest);
         var appUser = AppUser(
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
+          firstName: registerRequest.firstName,
+          lastName: registerRequest.lastName,
+          phoneNumber: registerRequest.phone,
+          email: registerRequest.email,
           token: result.token,
         );
         return Success(data: appUser);

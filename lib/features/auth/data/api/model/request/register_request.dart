@@ -22,15 +22,8 @@ class RegisterRequest {
     _phone = phone;
   }
 
-  RegisterRequest.fromJson(dynamic json) {
-    _username = json['username'];
-    _firstName = json['firstName'];
-    _lastName = json['lastName'];
-    _email = json['email'];
-    _password = json['password'];
-    _rePassword = json['rePassword'];
-    _phone = json['phone'];
-  }
+  factory RegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$RegisterRequestFromJson(json);
   String? _username;
   String? _firstName;
   String? _lastName;
@@ -47,15 +40,5 @@ class RegisterRequest {
   String? get rePassword => _rePassword;
   String? get phone => _phone;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['username'] = _username;
-    map['firstName'] = _firstName;
-    map['lastName'] = _lastName;
-    map['email'] = _email;
-    map['password'] = _password;
-    map['rePassword'] = _rePassword;
-    map['phone'] = _phone;
-    return map;
-  }
+  Map<String, dynamic> toJson() => _$RegisterRequestToJson(this);
 }
