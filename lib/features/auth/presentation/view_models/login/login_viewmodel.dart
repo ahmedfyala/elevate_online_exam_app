@@ -84,6 +84,6 @@ class LoginViewModel extends Cubit<LoginScreenState> {
   }
 
   void _goToRegister() {
-    emit(goToRegisterState());
+    emit(GoToRegisterState());
   }
 }

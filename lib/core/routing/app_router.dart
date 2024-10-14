@@ -1,4 +1,8 @@
 import 'package:elevate_online_exam_app/features/auth/presentation/screens/auth/login_screen.dart';
+import 'package:elevate_online_exam_app/features/auth/presentation/widgets/forget_password/forget_password_view.dart';
+import 'package:elevate_online_exam_app/features/auth/presentation/widgets/forget_password/otp_view.dart';
+import 'package:elevate_online_exam_app/features/auth/presentation/widgets/forget_password/reset_password_view.dart';
+import 'package:elevate_online_exam_app/features/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,19 +18,23 @@ class AppRouter {
       GoRoute(
           path: Routes.registerScreen,
           builder: (context, state) => RegisterScreen()),
-      // GoRoute(
-      //   path: Routes.onboardingScreen,
-      //   builder: (context, state) => const OnboardingScreen(),
-      // ),
-      // GoRoute(
-      //   path: Routes.loginScreen,
-      //   builder: (context, state) => const LoginScreen(),
-      // ),
-      // GoRoute(
-      //   path: Routes.homeScreen,
-      //   builder: (context, state) => const HomeScreen(),
-      // ),
-      // Add more routes here...
+      GoRoute(
+        path: Routes.homeScreen,
+        builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: Routes.otpScreen,
+        builder: (context, state) => const OtpView(),
+      ),
+      GoRoute(
+        path: Routes.forgotPasswordScreen,
+        builder: (context, state) =>  ForgetPasswordView(),
+      ),
+      GoRoute(
+        path: Routes.resetPasswordScreen,
+        builder: (context, state) =>  ResetPasswordView(),
+      ),
+
     ],
     errorBuilder: (context, state) => Scaffold(
       body: Center(

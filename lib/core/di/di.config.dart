@@ -21,12 +21,17 @@ import '../../features/auth/data/datasource/impl/auth_online_datasource_impl.dar
     as _i787;
 import '../../features/auth/data/repository/auth_repository.dart' as _i104;
 import '../../features/auth/domain/contract/repository/auth_repo.dart' as _i331;
+import '../../features/auth/presentation/view_models/forget_password/forget_password_view_model.dart'
+    as _i771;
 import '../../features/auth/presentation/view_models/login/login_viewmodel.dart'
-    as _i138;
+    as _i710;
 import '../../features/auth/presentation/view_models/register/register_viewmodel.dart'
-    as _i260;
+    as _i630;
+import '../../features/auth/usecases/forget_password_usecase.dart' as _i826;
 import '../../features/auth/usecases/login_usecase.dart' as _i387;
 import '../../features/auth/usecases/register_usecase.dart' as _i737;
+import '../../features/auth/usecases/resetPassword.dart' as _i745;
+import '../../features/auth/usecases/verify_reset_code.dart' as _i693;
 import 'di_module.dart' as _i211;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -58,14 +63,26 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i119.AuthOfflineDataSource>(),
           gh<_i119.AuthOnlineDataSource>(),
         ));
+    gh.factory<_i826.ForgetPasswordUseCase>(
+        () => _i826.ForgetPasswordUseCase(gh<_i331.AuthRepo>()));
     gh.factory<_i387.LoginUseCase>(
         () => _i387.LoginUseCase(gh<_i331.AuthRepo>()));
     gh.factory<_i737.RegisterUseCase>(
         () => _i737.RegisterUseCase(gh<_i331.AuthRepo>()));
-    gh.factory<_i138.LoginViewModel>(
-        () => _i138.LoginViewModel(gh<_i387.LoginUseCase>()));
-    gh.factory<_i260.RegisterViewModel>(
-        () => _i260.RegisterViewModel(gh<_i737.RegisterUseCase>()));
+    gh.factory<_i693.VerifyResetCodeUseCase>(
+        () => _i693.VerifyResetCodeUseCase(gh<_i331.AuthRepo>()));
+    gh.factory<_i745.ResetPasswordUseCase>(
+        () => _i745.ResetPasswordUseCase(gh<_i331.AuthRepo>()));
+    gh.factory<_i710.LoginViewModel>(
+        () => _i710.LoginViewModel(gh<_i387.LoginUseCase>()));
+    gh.factory<_i771.ForgetPasswordViewModel>(
+        () => _i771.ForgetPasswordViewModel(
+              gh<_i826.ForgetPasswordUseCase>(),
+              gh<_i693.VerifyResetCodeUseCase>(),
+              gh<_i745.ResetPasswordUseCase>(),
+            ));
+    gh.factory<_i630.RegisterViewModel>(
+        () => _i630.RegisterViewModel(gh<_i737.RegisterUseCase>()));
     return this;
   }
 }
