@@ -1,4 +1,5 @@
 import 'package:elevate_online_exam_app/features/auth/presentation/screens/auth/login_screen.dart';
+import 'package:elevate_online_exam_app/features/questions/presentation/screens/exam_question_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,6 +15,10 @@ class AppRouter {
       GoRoute(
           path: Routes.registerScreen,
           builder: (context, state) => RegisterScreen()),
+
+      GoRoute(
+          path: Routes.examQuestionsScreen,
+          builder: (context, state) => ExamQuestionsScreen()),
       // GoRoute(
       //   path: Routes.onboardingScreen,
       //   builder: (context, state) => const OnboardingScreen(),

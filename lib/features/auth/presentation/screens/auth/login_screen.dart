@@ -53,11 +53,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 showAwesomeDialog(context,
                     title: 'Success Register',
                     desc: 'You have been Successfully Registered', onOk: () {
-                  context.go(Routes.registerScreen);
+                  context.go(Routes.examQuestionsScreen);
                 }, dialogType: DialogType.success);
                 break;
               case NavigateToHomeState():
-                context.go(Routes.registerScreen);
+                context.go(Routes.examQuestionsScreen);
                 break;
 
               default:
@@ -91,6 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPasswordVisible: isPasswordVisible,
                 showPassword: () {
                   loginViewModel.doAction(ShowPasswordAction());
+                },
+                goToForgetPassword: () {
+                  context.go(Routes.registerScreen);
                 },
               );
             }

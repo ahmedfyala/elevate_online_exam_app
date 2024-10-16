@@ -10,6 +10,7 @@ class Routes {
   static const String changePasswordScreen = "/changePasswordScreen";
   // MARK: - 🏠 Home.
   static const String homeScreen = "/homeScreen";
+  static const String examQuestionsScreen = "/examQuestionsScreen";
   // // MARK: - 👤 Profile.
   // static const String profileScreen = "/profileScreen";
   // static const String editProfileScreen = "/editProfileScreen";
@@ -20,5 +21,4 @@ class Routes {
   // static const String aboutUsScreen = "/aboutUsScreen";
   // static const String contactUsScreen = "/contactUsScreen";
   // static const String faqScreen = "/faqScreen";
-
 }

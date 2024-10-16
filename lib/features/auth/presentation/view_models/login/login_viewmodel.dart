@@ -36,6 +36,9 @@ class LoginViewModel extends Cubit<LoginScreenState> {
       case ShowPasswordAction():
         _showPassword();
         break;
+      case NavigateToForgetPasswordAction():
+        _navigateToForgetPassword();
+        break;
     }
   }
 
@@ -51,12 +54,15 @@ class LoginViewModel extends Cubit<LoginScreenState> {
         if (result is Success<AppUser>) {
           emit(SuccessState(result.data));
         } else if (result is Fail<AppUser>) {
-          emit(ErrorState(result.exception));
+          emit(ErrorState(
+              result.exception ?? Exception('Unknown error occurred')));
         } else {
           emit(LoadingState());
         }
       } catch (e) {
-        emit(ErrorState(e as Exception?));
+        emit(ErrorState(
+            e is Exception ? e : Exception('Unknown error occurred')));
+        print(e);
       }
     }
   }
@@ -85,5 +91,9 @@ class LoginViewModel extends Cubit<LoginScreenState> {
 
   void _goToRegister() {
     emit(goToRegisterState());
+  }
+
+  void _navigateToForgetPassword() {
+    emit(NavigateToFogotPasswordState());
   }
 }
