@@ -1,5 +1,6 @@
 import 'package:elevate_online_exam_app/core/widgets/alert_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 showLoading(BuildContext context, String? message) {
   showDialog(
@@ -14,5 +15,7 @@ showLoading(BuildContext context, String? message) {
 }
 
 hideLoading(BuildContext context) {
-  Navigator.of(context).pop();
+  if (GoRouter.of(context).canPop()) {
+    GoRouter.of(context).pop();
+  }
 }

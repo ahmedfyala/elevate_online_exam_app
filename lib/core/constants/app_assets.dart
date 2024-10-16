@@ -4,6 +4,7 @@ class AppIcons {
 
 class AppImages {
   static const String imagesPath = 'assets/images';
+  static const String clockImage = '$imagesPath/clock.png';
   // MARK: - Flags.
   static const String arFlag = '$imagesPath/sa_flag.png';
   static const String enFlag = '$imagesPath/uk_flag.png';
@@ -13,17 +14,15 @@ class AppImages {
   static const String onboarding1 = '$imagesPath/onboarding1.png';
   static const String onboarding2 = '$imagesPath/onboarding2.png';
   static const String onboarding3 = '$imagesPath/onboarding3.png';
-
 }
 
 class AppLotties {
   static const String lottiesPath = 'assets/lotties';
-
 }
 
 class AppSvgs {
   static const String svgsPath = 'assets/svgs';
-
+  // static const String clockImage = '$svgsPath/clock.svg';
 
 // MARK: - ↙️ bottom app bar.
   static const String awarenessIcon = '$svgsPath/awareness-icon.svg';

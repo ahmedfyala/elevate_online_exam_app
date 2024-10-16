@@ -35,6 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 current is PasswordVisibilityState ||
                 current is ValidateColorButtonState;
           },
+          listenWhen: (previous, current) {
+            if (previous is LoadingState || current is ErrorState) {
+              hideLoading(context);
+            }
+            return current is! InitialState;
+          },
           listener: (context, state) {
             switch (state) {
               case LoadingState():
@@ -53,11 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 showAwesomeDialog(context,
                     title: 'Success Register',
                     desc: 'You have been Successfully Registered', onOk: () {
-                  context.go(Routes.registerScreen);
+                  context.go(Routes.examQuestionsScreen);
                 }, dialogType: DialogType.success);
                 break;
               case NavigateToHomeState():
-                context.go(Routes.registerScreen);
+                context.go(Routes.examQuestionsScreen);
                 break;
 
               default:
@@ -91,6 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPasswordVisible: isPasswordVisible,
                 showPassword: () {
                   loginViewModel.doAction(ShowPasswordAction());
+                },
+                goToForgetPassword: () {
+                  context.go(Routes.registerScreen);
                 },
               );
             }
