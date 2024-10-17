@@ -4,18 +4,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 @injectable
 class MyServices {
   static final MyServices _instance = MyServices._internal();
-  late SharedPreferences sharedPreferences;
+  SharedPreferences? sharedPreferences;
 
-  // Private constructor
-  MyServices._internal();
+  MyServices._internal() {
+    _init();
+  }
 
-  // Factory constructor to return the same instance
   factory MyServices() {
     return _instance;
   }
 
-  // Initialization method
-  Future<void> init() async {
+  Future<SharedPreferences> _init() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences!;
+  }
+
+  Future<SharedPreferences> getSharedPreferences() async {
+    if (sharedPreferences == null) {
+      return await _init();
+    }
+    return sharedPreferences!;
   }
 }

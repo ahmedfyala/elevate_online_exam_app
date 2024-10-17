@@ -55,11 +55,7 @@ class ExamQuestionsViewmodel extends Cubit<ExamQuestionsState> {
   Future<void> _fetchQuestionsBySubject() async {
     emit(LoadingState());
     try {
-      // Fetch the questions
-      var token =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDY4MmIwZTc3ZDY4NTk1YTI5MjE2NSIsInJvbGUiOiJ1c2VyIiwidXNlciI6eyJfaWQiOiI2NzA2ODJiMGU3N2Q2ODU5NWEyOTIxNjUiLCJ1c2VybmFtZSI6IkFobWVkczY2MjEwIiwiZmlyc3ROYW1lIjoiQWhtZWQiLCJsYXN0TmFtZSI6IlNhbGFoIiwiZW1haWwiOiJhaG1lZHM2NjIxMEBnbWFpbC5jb20iLCJwaG9uZSI6IjAxNTUzMTYxNjI0Iiwicm9sZSI6InVzZXIiLCJpc1ZlcmlmaWVkIjpmYWxzZSwiY3JlYXRlZEF0IjoiMjAyNC0xMC0wOVQxMzoxODo0MC45NzlaIn0sImlhdCI6MTcyOTAzNjYxNn0.pLku5veqk1_6moKYeaLSz9UeDxv4NBCbgoQB5qjYqyM';
-      Result<ExamResponse> result =
-          await _examQuestionsUseCase.getQuestions(token);
+      Result<ExamResponse> result = await _examQuestionsUseCase.getQuestions();
 
       if (result is Success<ExamResponse>) {
         _questions = result.data!.questions

@@ -10,7 +10,7 @@ class ExamQuestionsUseCase {
 
   ExamQuestionsUseCase(this.repository);
 
-  Future<Result<ExamResponse>> getQuestions(String token) async {
-    return await repository.getQuestions(token);
+  Future<Result<ExamResponse>> getQuestions() async {
+    return await repository.getQuestions();
   }
 }

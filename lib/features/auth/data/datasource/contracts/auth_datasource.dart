@@ -8,5 +8,7 @@ abstract class AuthOnlineDataSource {
 }
 
 abstract class AuthOfflineDataSource {
-  Future<Result<AppUser>> login(String email, String password);
+  Future<AppUser?> getUser();
+  Future<void> saveUser(AppUser appUser);
+  Future<Result<void>> deleteUser();
 }

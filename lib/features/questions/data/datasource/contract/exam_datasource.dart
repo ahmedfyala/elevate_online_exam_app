@@ -5,5 +5,3 @@ import '../../api/model/exam_response.dart';
 abstract class ExamOnlineDatasource {
   Future<Result<ExamResponse>> getQuestions(String token);
 }
-
-abstract class AuthOfflineDataSource {}

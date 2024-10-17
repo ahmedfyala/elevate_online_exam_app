@@ -65,7 +65,8 @@ class _LoginScreenState extends State<LoginScreen> {
               case NavigateToHomeState():
                 context.go(Routes.examQuestionsScreen);
                 break;
-
+              case GoToRegisterState():
+                context.go(Routes.registerScreen);
               default:
             }
           },

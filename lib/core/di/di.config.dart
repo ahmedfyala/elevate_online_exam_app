@@ -56,12 +56,12 @@ extension GetItInjectableX on _i174.GetIt {
     final apiModule = _$ApiModule();
     gh.factory<_i1.MyServices>(() => _i1.MyServices());
     gh.lazySingleton<_i361.Dio>(() => apiModule.provideDio());
-    gh.factory<_i119.AuthOfflineDataSource>(
-        () => _i97.AuthOfflineDataSourceImpl());
     gh.factory<String>(
       () => apiModule.baseUrl,
       instanceName: 'baseUrl',
     );
+    gh.factory<_i119.AuthOfflineDataSource>(
+        () => _i97.AuthOfflineDataSourceImpl(gh<_i1.MyServices>()));
     gh.factory<_i198.RetrofitClient>(() => _i198.RetrofitClient(
           gh<_i361.Dio>(),
           baseUrl: gh<String>(instanceName: 'baseUrl'),
@@ -74,12 +74,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i787.AuthOnlineDatasourceImpl(gh<_i198.RetrofitClient>()));
     gh.factory<_i914.ExamOnlineDatasource>(
         () => _i68.ExamOnlineDataSourceImpl(gh<_i415.RetrofitClient>()));
+    gh.factory<_i754.ExamRepository>(() => _i263.ExamRepositoryImpl(
+          gh<_i914.ExamOnlineDatasource>(),
+          gh<_i119.AuthOfflineDataSource>(),
+        ));
     gh.factory<_i331.AuthRepo>(() => _i104.AuthRepositoryImpl(
           gh<_i119.AuthOfflineDataSource>(),
           gh<_i119.AuthOnlineDataSource>(),
         ));
-    gh.factory<_i754.ExamRepository>(
-        () => _i263.ExamRepositoryImpl(gh<_i914.ExamOnlineDatasource>()));
     gh.factory<_i387.LoginUseCase>(
         () => _i387.LoginUseCase(gh<_i331.AuthRepo>()));
     gh.factory<_i737.RegisterUseCase>(
