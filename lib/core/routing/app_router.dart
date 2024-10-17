@@ -8,7 +8,7 @@ import 'routes.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.examQuestionsScreen,
+    initialLocation: Routes.loginScreen,
     routes: [
       GoRoute(
           path: Routes.loginScreen, builder: (context, state) => LoginScreen()),

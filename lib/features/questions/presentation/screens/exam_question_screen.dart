@@ -8,8 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/di/di.dart';
 import '../viewmodels/exam_questions_action.dart';
-import '../viewmodels/exam_questions_state.dart';
-import '../viewmodels/exam_questions_viewmodel.dart';
 
 class ExamQuestionsScreen extends StatefulWidget {
   @override
