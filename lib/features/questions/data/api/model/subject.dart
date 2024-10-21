@@ -4,21 +4,30 @@ part 'subject.g.dart';
 
 @JsonSerializable()
 class Subject {
-  @JsonKey(name: '_id')
-  final String id;
-  final String name;
-  final String icon;
-  final DateTime createdAt;
-
   Subject({
-    required this.id,
-    required this.name,
-    required this.icon,
-    required this.createdAt,
-  });
+    String? id,
+    String? name,
+    String? icon,
+    String? createdAt,
+  }) {
+    _id = id;
+    _name = name;
+    _icon = icon;
+    _createdAt = createdAt;
+  }
 
   factory Subject.fromJson(Map<String, dynamic> json) =>
       _$SubjectFromJson(json);
+
+  String? _id;
+  String? _name;
+  String? _icon;
+  String? _createdAt;
+
+  String? get id => _id;
+  String? get name => _name;
+  String? get icon => _icon;
+  String? get createdAt => _createdAt;
 
   Map<String, dynamic> toJson() => _$SubjectToJson(this);
 }

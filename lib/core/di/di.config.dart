@@ -10,6 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
+import 'package:hive/hive.dart' as _i979;
 import 'package:injectable/injectable.dart' as _i526;
 
 import '../../features/auth/data/api/retrofit_client.dart' as _i198;
@@ -30,12 +31,15 @@ import '../../features/auth/usecases/register_usecase.dart' as _i737;
 import '../../features/questions/data/api/retrofit_client.dart' as _i415;
 import '../../features/questions/data/datasource/contract/exam_datasource.dart'
     as _i914;
+import '../../features/questions/data/datasource/impl/exam_offline_datasource.dart'
+    as _i276;
 import '../../features/questions/data/datasource/impl/exam_online_datasource.dart'
     as _i68;
 import '../../features/questions/data/repository/exam_repository_impl.dart'
     as _i263;
 import '../../features/questions/domain/contract/repository/exam_repository.dart'
     as _i754;
+import '../../features/questions/domain/model/hive_questions.dart' as _i208;
 import '../../features/questions/presentation/viewmodels/exam_questions_viewmodel.dart'
     as _i401;
 import '../../features/questions/usecases/exam_questions_usecase.dart' as _i510;
@@ -60,6 +64,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => apiModule.baseUrl,
       instanceName: 'baseUrl',
     );
+    gh.factory<_i914.ExamOfflineDatasource>(() =>
+        _i276.ExamOfflineDataSourceImpl(gh<_i979.Box<_i208.HiveQuestions>>()));
     gh.factory<_i119.AuthOfflineDataSource>(
         () => _i97.AuthOfflineDataSourceImpl(gh<_i1.MyServices>()));
     gh.factory<_i198.RetrofitClient>(() => _i198.RetrofitClient(
@@ -74,13 +80,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i787.AuthOnlineDatasourceImpl(gh<_i198.RetrofitClient>()));
     gh.factory<_i914.ExamOnlineDatasource>(
         () => _i68.ExamOnlineDataSourceImpl(gh<_i415.RetrofitClient>()));
-    gh.factory<_i754.ExamRepository>(() => _i263.ExamRepositoryImpl(
-          gh<_i914.ExamOnlineDatasource>(),
-          gh<_i119.AuthOfflineDataSource>(),
-        ));
     gh.factory<_i331.AuthRepo>(() => _i104.AuthRepositoryImpl(
           gh<_i119.AuthOfflineDataSource>(),
           gh<_i119.AuthOnlineDataSource>(),
+        ));
+    gh.factory<_i754.ExamRepository>(() => _i263.ExamRepositoryImpl(
+          gh<_i914.ExamOnlineDatasource>(),
+          gh<_i914.ExamOfflineDatasource>(),
+          gh<_i119.AuthOfflineDataSource>(),
         ));
     gh.factory<_i387.LoginUseCase>(
         () => _i387.LoginUseCase(gh<_i331.AuthRepo>()));

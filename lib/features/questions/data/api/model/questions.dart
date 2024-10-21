@@ -1,37 +1,52 @@
-import 'package:elevate_online_exam_app/features/questions/data/api/model/subject.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'exam.dart';
+import '../model/exam.dart';
+import '../model/subject.dart';
+import 'answers.dart';
 
 part 'questions.g.dart';
 
 @JsonSerializable()
 class Question {
-  @JsonKey(name: '_id')
-  final String id;
-  final String question;
-  final String A1;
-  final String A2;
-  final String A3;
-  final String? A4;
-  final String correct;
-  final Subject subject;
-  final Exam exam;
-
   Question({
-    required this.id,
-    required this.question,
-    required this.A1,
-    required this.A2,
-    required this.A3,
-    this.A4,
-    required this.correct,
-    required this.subject,
-    required this.exam,
-  });
+    List<Answers>? answers,
+    String? type,
+    String? id,
+    String? question,
+    String? correct,
+    Subject? subject,
+    Exam? exam,
+    String? createdAt,
+  }) {
+    _answers = answers;
+    _type = type;
+    _id = id;
+    _question = question;
+    _correct = correct;
+    _subject = subject;
+    _exam = exam;
+    _createdAt = createdAt;
+  }
 
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);
+  List<Answers>? _answers;
+  String? _type;
+  String? _id;
+  String? _question;
+  String? _correct;
+  Subject? _subject;
+  Exam? _exam;
+  String? _createdAt;
+
+  List<Answers>? get answers => _answers;
+  String? get type => _type;
+  String? get id => _id;
+  String? get question => _question;
+  String? get correct => _correct;
+  Subject? get subject => _subject;
+  Exam? get exam => _exam;
+  String? get createdAt => _createdAt;
 
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 }

@@ -9,12 +9,24 @@ import '../api/model/exam_response.dart';
 @Injectable(as: ExamRepository)
 class ExamRepositoryImpl implements ExamRepository {
   ExamOnlineDatasource examOnlineDatasource;
+  ExamOfflineDatasource examOfflineDatasource;
   AuthOfflineDataSource authOfflineDataSource;
-  ExamRepositoryImpl(this.examOnlineDatasource, this.authOfflineDataSource);
+
+  ExamRepositoryImpl(this.examOnlineDatasource, this.examOfflineDatasource,
+      this.authOfflineDataSource);
 
   @override
   Future<Result<ExamResponse>> getQuestions() async {
     var user = await authOfflineDataSource.getUser();
-    return await examOnlineDatasource.getQuestions(user!.token!);
+    var response = await examOnlineDatasource.getQuestions(user!.token!);
+
+    if (response is Success<ExamResponse>) {
+      for (var question in response.data?.questions ?? []) {
+        await examOfflineDatasource.saveQuestions(question);
+      }
+    }
+    var offlineQuestions = await examOfflineDatasource.getQuestions();
+    print('the offline questions are $offlineQuestions');
+    return response;
   }
 }

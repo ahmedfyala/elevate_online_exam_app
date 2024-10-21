@@ -5,7 +5,7 @@ class AppUser {
   String? email;
   String? token;
   String? phoneNumber;
-
+  String? username;
   AppUser({
     this.id,
     this.firstName,
@@ -13,6 +13,7 @@ class AppUser {
     this.email,
     this.token,
     this.phoneNumber,
+    this.username,
   });
 
   // Convert AppUser to JSON (Map)

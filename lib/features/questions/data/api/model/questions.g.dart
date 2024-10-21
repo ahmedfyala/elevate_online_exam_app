@@ -7,25 +7,29 @@ part of 'questions.dart';
 // **************************************************************************
 
 Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
-      id: json['_id'] as String,
-      question: json['question'] as String,
-      A1: json['A1'] as String,
-      A2: json['A2'] as String,
-      A3: json['A3'] as String,
-      A4: json['A4'] as String?,
-      correct: json['correct'] as String,
-      subject: Subject.fromJson(json['subject'] as Map<String, dynamic>),
-      exam: Exam.fromJson(json['exam'] as Map<String, dynamic>),
+      answers: (json['answers'] as List<dynamic>?)
+          ?.map((e) => Answers.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      type: json['type'] as String?,
+      id: json['id'] as String?,
+      question: json['question'] as String?,
+      correct: json['correct'] as String?,
+      subject: json['subject'] == null
+          ? null
+          : Subject.fromJson(json['subject'] as Map<String, dynamic>),
+      exam: json['exam'] == null
+          ? null
+          : Exam.fromJson(json['exam'] as Map<String, dynamic>),
+      createdAt: json['createdAt'] as String?,
     );
 
 Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
-      '_id': instance.id,
+      'answers': instance.answers,
+      'type': instance.type,
+      'id': instance.id,
       'question': instance.question,
-      'A1': instance.A1,
-      'A2': instance.A2,
-      'A3': instance.A3,
-      'A4': instance.A4,
       'correct': instance.correct,
       'subject': instance.subject,
       'exam': instance.exam,
+      'createdAt': instance.createdAt,
     };

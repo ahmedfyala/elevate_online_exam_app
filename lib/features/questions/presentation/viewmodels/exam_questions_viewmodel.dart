@@ -1,4 +1,5 @@
 import 'package:elevate_online_exam_app/features/questions/data/api/model/questions.dart';
+import 'package:elevate_online_exam_app/features/questions/domain/model/answer_model.dart';
 import 'package:elevate_online_exam_app/features/questions/presentation/viewmodels/exam_questions_action.dart';
 import 'package:elevate_online_exam_app/features/questions/presentation/viewmodels/exam_questions_state.dart';
 import 'package:elevate_online_exam_app/features/questions/usecases/exam_questions_usecase.dart';
@@ -11,22 +12,25 @@ import '../../data/api/model/exam_response.dart';
 @injectable
 class ExamQuestionsViewmodel extends Cubit<ExamQuestionsState> {
   final ExamQuestionsUseCase _examQuestionsUseCase;
-  int _currentQuestionIndex = 0; // To keep track of the current question index
+  int _currentQuestionIndex = 0;
   List<Question>? _questions;
-  String? selectedOption; // Track the selected option
-
+  String? selectedOption;
+  bool isAnswerCorrect = false; // Track if the selected option is correct
+  List<AnswerModel> selectedAnswers = [];
   ExamQuestionsViewmodel(this._examQuestionsUseCase) : super(InitialState());
-  final String subjectId = '670037f6728c92b7fdf434fc'; // Your subjectId
+
+  final String subjectId = '670037f6728c92b7fdf434fc';
   bool get hasPreviousQuestion => _currentQuestionIndex > 0;
   bool get hasNextQuestion =>
       _questions != null && _currentQuestionIndex < _questions!.length - 1;
   int get currentQuestionIndex => _currentQuestionIndex;
 
-  // Exposing the total number of questions
+  // Expose total number of questions
   int get totalQuestions => _questions?.length ?? 0;
 
-  // You can also expose the current question text for convenience
+  // Expose current question text
   String get currentQuestionText => currentQuestion?.question ?? '';
+
   void doAction(ExamQuestionsAction action, {String? option}) {
     switch (action) {
       case FetchQuestionsAction():
@@ -52,15 +56,14 @@ class ExamQuestionsViewmodel extends Cubit<ExamQuestionsState> {
   Question? get currentQuestion => _questions != null && _questions!.isNotEmpty
       ? _questions![_currentQuestionIndex]
       : null;
+
   Future<void> _fetchQuestionsBySubject() async {
     emit(LoadingState());
     try {
       Result<ExamResponse> result = await _examQuestionsUseCase.getQuestions();
 
       if (result is Success<ExamResponse>) {
-        _questions = result.data!.questions
-            ?.where((element) => element.subject.id == subjectId)
-            .toList();
+        _questions = result.data!.questions;
         if (_questions != null && _questions!.isNotEmpty) {
           _currentQuestionIndex = 0;
           emit(SuccessState(_questions!)); // Transition to success state
@@ -77,31 +80,53 @@ class ExamQuestionsViewmodel extends Cubit<ExamQuestionsState> {
     }
   }
 
+  void _addAnswer(String questionId, String selectedAnswer) {
+    final answer = AnswerModel(
+      questionId: questionId,
+      selectedAnswer: selectedAnswer,
+    );
+    selectedAnswers.add(answer);
+  }
+
+  void _removeAnswer(String questionId) {
+    selectedAnswers.removeWhere((element) => element.questionId == questionId);
+  }
+
   void _nextQuestion() {
     if (_questions != null) {
-      // Check if it's the last question
       if (_currentQuestionIndex < _questions!.length - 1) {
         _currentQuestionIndex++;
         selectedOption = null;
+        isAnswerCorrect = false;
         emit(SuccessState(_questions!));
       }
     }
-  }
-
-  _submitExam() {
-    emit(FinishState());
   }
 
   void _previousQuestion() {
     if (_questions != null && _currentQuestionIndex > 0) {
       _currentQuestionIndex--;
       selectedOption = null;
+      isAnswerCorrect = false;
       emit(SuccessState(_questions!));
     }
   }
 
   void _selectOption(String option) {
     selectedOption = option;
-    emit(SelectedOptionState(selectedOption)); // Emit the selected option
+
+    // Check if the selected option is correct
+    if (currentQuestion != null && currentQuestion!.correct == option) {
+      isAnswerCorrect = true;
+    } else {
+      isAnswerCorrect = false;
+    }
+
+    // Emit the selected option and correctness state
+    emit(SelectedOptionState(selectedOption));
+  }
+
+  void _submitExam() {
+    emit(FinishState());
   }
 }

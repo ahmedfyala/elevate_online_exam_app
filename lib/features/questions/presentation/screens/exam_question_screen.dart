@@ -109,19 +109,14 @@ class _ExamQuestionsScreenState extends State<ExamQuestionsScreen> {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            Text(question.question,
+                            Text(question.question!,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 18,
                                   color: Colors.black,
                                 )),
                             const SizedBox(height: 16),
-                            for (var choice in [
-                              question.A1,
-                              question.A2,
-                              question.A3,
-                              question.A4
-                            ].where((c) => c != null))
+                            for (var choice in question.answers!)
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8),
@@ -133,7 +128,7 @@ class _ExamQuestionsScreenState extends State<ExamQuestionsScreen> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: RadioListTile<String>(
-                                    value: choice!,
+                                    value: choice.key!,
                                     groupValue: viewmodel.selectedOption,
                                     onChanged: (value) {
                                       setState(() {
@@ -143,7 +138,7 @@ class _ExamQuestionsScreenState extends State<ExamQuestionsScreen> {
                                           value!)); // Emit selected option
                                     },
                                     title: Text(
-                                      choice,
+                                      choice.answer!,
                                       style: const TextStyle(
                                         color: Color(0xFF1A1A1A),
                                         fontSize: 16,
@@ -159,35 +154,42 @@ class _ExamQuestionsScreenState extends State<ExamQuestionsScreen> {
                             const SizedBox(height: 80),
                             Row(
                               children: [
-                                Expanded(
-                                  child: OutlinedButton(
-                                    onPressed: () {
-                                      viewmodel
-                                          .doAction(PreviousQuestionAction());
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                      foregroundColor: Color(0xFF0033CC),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 32,
-                                          vertical:
-                                              12), // Padding for consistency
-                                      side: BorderSide(
-                                          color: Color(0xFF0033CC),
-                                          width:
-                                              2), // Border thickness and color
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            12), // Rounded corners
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Back',
-                                      style: TextStyle(
-                                          color: Color(
-                                              0xFF0033CC)), // Blue text color
-                                    ),
-                                  ),
-                                ),
+                                viewmodel.hasPreviousQuestion
+                                    ? Expanded(
+                                        child: OutlinedButton(
+                                          onPressed: () {
+                                            viewmodel.doAction(
+                                                PreviousQuestionAction());
+                                          },
+                                          style: OutlinedButton.styleFrom(
+                                            foregroundColor: Color(0xFF0033CC),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 32,
+                                                vertical:
+                                                    12), // Padding for consistency
+                                            side: BorderSide(
+                                                color: Color(0xFF0033CC),
+                                                width:
+                                                    2), // Border thickness and color
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      12), // Rounded corners
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Back',
+                                            style: TextStyle(
+                                                color: Color(
+                                                    0xFF0033CC)), // Blue text color
+                                          ),
+                                        ),
+                                      )
+                                    : Expanded(
+                                        child:
+                                            Container()), // Empty container for spacing
+
+                                Container(), // Empty container for spacing
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: ElevatedButton(
