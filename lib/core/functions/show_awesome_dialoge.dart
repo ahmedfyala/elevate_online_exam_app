@@ -23,5 +23,5 @@ showAwesomeDialog(BuildContext context,
       FocusScope.of(context).unfocus();
       onOk();
     },
-  )..show();
+  ).show();
 }
