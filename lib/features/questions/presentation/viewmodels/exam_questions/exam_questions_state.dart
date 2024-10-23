@@ -1,4 +1,4 @@
-import 'package:elevate_online_exam_app/features/questions/data/api/model/questions.dart';
+import '../../../data/api/model/response/questions.dart';
 
 sealed class ExamQuestionsState {}
 

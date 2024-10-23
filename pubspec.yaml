@@ -31,9 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
   go_router:
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  build_runner:
+  retrofit_generator: '>=8.0.0 <10.0.0' # for Dart 3.3 use ^9.0.0
+  json_serializable: ^6.8.0
   cupertino_icons: ^1.0.6
   injectable:
   # add get_it
@@ -48,6 +48,8 @@ dependencies:
   flutter_svg: ^2.0.4
   hive: ^2.2.3
   hive_flutter:
+  flutter_screenutil: ^5.9.3
+
 
 dev_dependencies:
   flutter_test:
@@ -55,25 +57,21 @@ dev_dependencies:
   # add the generator to your dev_dependencies
   injectable_generator:
   # add build runner if not already added
-  build_runner:
-  retrofit_generator: '>=8.0.0 <10.0.0' # for Dart 3.3 use ^9.0.0
-  json_serializable: ^6.8.0
   flutter_lints: ^3.0.0
-  hive_generator: 
+  hive_generator:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+  cached_network_image:
+  flutter_secure_storage:
+  pin_code_fields:
+
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
-
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/
+    - assets/svgs/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -101,7 +99,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-  assets:
-    - assets/
-    - assets/svgs/
-    - assets/images/

@@ -1,6 +1,6 @@
 class AnswerModel {
-  final String questionId;
-  final String selectedAnswer;
+  final String? questionId;
+  late final String? selectedAnswer;
 
   AnswerModel({required this.questionId, required this.selectedAnswer});
 
@@ -8,6 +8,13 @@ class AnswerModel {
     return {
       'questionId': questionId,
       'selectedAnswer': selectedAnswer,
+    };
+  }
+
+  toAnswerRequest() {
+    return {
+      'qid': questionId,
+      'answer': selectedAnswer,
     };
   }
 }

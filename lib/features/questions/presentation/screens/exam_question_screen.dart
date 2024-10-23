@@ -1,13 +1,15 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:elevate_online_exam_app/core/functions/show_awesome_dialoge.dart';
-import 'package:elevate_online_exam_app/features/questions/presentation/viewmodels/exam_questions_state.dart';
-import 'package:elevate_online_exam_app/features/questions/presentation/viewmodels/exam_questions_viewmodel.dart';
+import 'package:elevate_online_exam_app/features/questions/presentation/viewmodels/exam_questions/exam_questions_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/di/di.dart';
-import '../viewmodels/exam_questions_action.dart';
+import '../../../../core/routing/routes.dart';
+import '../viewmodels/exam_questions/exam_questions_action.dart';
+import '../viewmodels/exam_questions/exam_questions_viewmodel.dart';
 
 class ExamQuestionsScreen extends StatefulWidget {
   @override
@@ -245,7 +247,13 @@ class _ExamQuestionsScreenState extends State<ExamQuestionsScreen> {
                     }
                   },
                   listener: (BuildContext context, ExamQuestionsState state) {
-                    if (state is FinishState) {}
+                    if (state is FinishState) {
+                      // Pass the selected answers to the examScoreScreen
+                      context.go(
+                        Routes.examScoreScreen,
+                        extra: examQuestionsViewmodel.selectedAnswers,
+                      );
+                    }
                   },
                 ),
               ),

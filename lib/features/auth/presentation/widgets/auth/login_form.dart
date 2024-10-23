@@ -3,6 +3,9 @@ import 'package:elevate_online_exam_app/core/widgets/custom_auth_button.dart';
 import 'package:elevate_online_exam_app/core/widgets/custom_text_form_feild.dart';
 import 'package:elevate_online_exam_app/features/auth/presentation/widgets/auth/no_account_row.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../../core/routing/routes.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
@@ -73,7 +76,9 @@ class LoginForm extends StatelessWidget {
                     ],
                   ),
                   TextButton(
-                    onPressed: goToForgetPassword,
+                    onPressed: () {
+                      context.push(Routes.forgotPasswordScreen);
+                    },
                     child: const Text(
                       'Forget password?',
                       style: TextStyle(

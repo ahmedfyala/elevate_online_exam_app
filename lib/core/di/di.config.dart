@@ -22,12 +22,19 @@ import '../../features/auth/data/datasource/impl/auth_online_datasource_impl.dar
     as _i787;
 import '../../features/auth/data/repository/auth_repository.dart' as _i104;
 import '../../features/auth/domain/contract/repository/auth_repo.dart' as _i331;
+import '../../features/auth/presentation/view_models/forget_password/forget_password_view_model.dart'
+    as _i771;
 import '../../features/auth/presentation/view_models/login/login_viewmodel.dart'
     as _i710;
 import '../../features/auth/presentation/view_models/register/register_viewmodel.dart'
     as _i630;
+import '../../features/auth/usecases/forget_password_usecase.dart' as _i826;
 import '../../features/auth/usecases/login_usecase.dart' as _i387;
 import '../../features/auth/usecases/register_usecase.dart' as _i737;
+import '../../features/auth/usecases/resetPassword.dart' as _i745;
+import '../../features/auth/usecases/verify_reset_code.dart' as _i693;
+import '../../features/home/presentation/viewmodel/home_viewmodel.dart'
+    as _i376;
 import '../../features/questions/data/api/retrofit_client.dart' as _i415;
 import '../../features/questions/data/datasource/contract/exam_datasource.dart'
     as _i914;
@@ -40,8 +47,8 @@ import '../../features/questions/data/repository/exam_repository_impl.dart'
 import '../../features/questions/domain/contract/repository/exam_repository.dart'
     as _i754;
 import '../../features/questions/domain/model/hive_questions.dart' as _i208;
-import '../../features/questions/presentation/viewmodels/exam_questions_viewmodel.dart'
-    as _i401;
+import '../../features/questions/presentation/viewmodels/exam_questions/exam_questions_viewmodel.dart'
+    as _i490;
 import '../../features/questions/usecases/exam_questions_usecase.dart' as _i510;
 import '../shared_prefrense/token_storage.dart' as _i1;
 import 'di_module.dart' as _i211;
@@ -59,6 +66,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final apiModule = _$ApiModule();
     gh.factory<_i1.MyServices>(() => _i1.MyServices());
+    gh.factory<_i376.HomeViewModel>(() => _i376.HomeViewModel());
     gh.lazySingleton<_i361.Dio>(() => apiModule.provideDio());
     gh.factory<String>(
       () => apiModule.baseUrl,
@@ -89,18 +97,30 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i914.ExamOfflineDatasource>(),
           gh<_i119.AuthOfflineDataSource>(),
         ));
+    gh.factory<_i826.ForgetPasswordUseCase>(
+        () => _i826.ForgetPasswordUseCase(gh<_i331.AuthRepo>()));
     gh.factory<_i387.LoginUseCase>(
         () => _i387.LoginUseCase(gh<_i331.AuthRepo>()));
     gh.factory<_i737.RegisterUseCase>(
         () => _i737.RegisterUseCase(gh<_i331.AuthRepo>()));
+    gh.factory<_i745.ResetPasswordUseCase>(
+        () => _i745.ResetPasswordUseCase(gh<_i331.AuthRepo>()));
+    gh.factory<_i693.VerifyResetCodeUseCase>(
+        () => _i693.VerifyResetCodeUseCase(gh<_i331.AuthRepo>()));
     gh.factory<_i710.LoginViewModel>(
         () => _i710.LoginViewModel(gh<_i387.LoginUseCase>()));
     gh.factory<_i510.ExamQuestionsUseCase>(
         () => _i510.ExamQuestionsUseCase(gh<_i754.ExamRepository>()));
+    gh.factory<_i771.ForgetPasswordViewModel>(
+        () => _i771.ForgetPasswordViewModel(
+              gh<_i826.ForgetPasswordUseCase>(),
+              gh<_i693.VerifyResetCodeUseCase>(),
+              gh<_i745.ResetPasswordUseCase>(),
+            ));
     gh.factory<_i630.RegisterViewModel>(
         () => _i630.RegisterViewModel(gh<_i737.RegisterUseCase>()));
-    gh.factory<_i401.ExamQuestionsViewmodel>(
-        () => _i401.ExamQuestionsViewmodel(gh<_i510.ExamQuestionsUseCase>()));
+    gh.factory<_i490.ExamQuestionsViewmodel>(
+        () => _i490.ExamQuestionsViewmodel(gh<_i510.ExamQuestionsUseCase>()));
     return this;
   }
 }

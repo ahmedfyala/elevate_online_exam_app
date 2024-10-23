@@ -1,4 +1,4 @@
-import 'package:elevate_online_exam_app/features/questions/data/api/model/questions.dart';
+import 'package:elevate_online_exam_app/features/questions/data/api/model/response/questions.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'exam_response.g.dart';

@@ -37,7 +37,7 @@ class _RetrofitClient implements RetrofitClient {
     )
         .compose(
           _dio.options,
-          'api/v1/questions',
+          '/api/v1/questions',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -50,6 +50,44 @@ class _RetrofitClient implements RetrofitClient {
     late ExamResponse _value;
     try {
       _value = ExamResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<CheckAnswerResponse> checkAnswer(
+    String token,
+    CheckAnswerRequest checkAnswerRequest,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'token': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(checkAnswerRequest.toJson());
+    final _options = _setStreamType<CheckAnswerResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/v1/questions/check',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CheckAnswerResponse _value;
+    try {
+      _value = CheckAnswerResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
