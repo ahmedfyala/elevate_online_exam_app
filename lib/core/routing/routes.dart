@@ -8,12 +8,15 @@ class Routes {
   static const String forgotPasswordScreen = "/forgotPasswordScreen";
   static const String resetPasswordScreen = "/resetPasswordScreen";
   static const String changePasswordScreen = "/changePasswordScreen";
+
   // MARK: - 🏠 Home.
   static const String homeScreen = "/homeScreen";
   static const String examQuestionsScreen = "/examQuestionsScreen";
+  static const String examScoreScreen = "/examScoreScreen";
+  static const String questionsResultScreen = "/questionsResultScreen";
   // // MARK: - 👤 Profile.
-  // static const String profileScreen = "/profileScreen";
-  // static const String editProfileScreen = "/editProfileScreen";
+  static const String profileScreen = "/profileScreen";
+  static const String editProfileScreen = "/editProfileScreen";
   // // MARK: - ⚙️ Settings.
   // static const String settingsScreen = "/settingsScreen";
   // static const String termsAndConditionsScreen = "/termsAndConditionsScreen";

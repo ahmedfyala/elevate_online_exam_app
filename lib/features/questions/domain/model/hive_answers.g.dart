@@ -6,30 +6,36 @@ part of 'hive_answers.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HiveAnswersAdapter extends TypeAdapter<HiveAnswers> {
+class ResultsHiveAdapter extends TypeAdapter<ResultsHive> {
   @override
-  final int typeId = 1;
+  final int typeId = 5;
 
   @override
-  HiveAnswers read(BinaryReader reader) {
+  ResultsHive read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveAnswers(
-      questionId: fields[0] as String,
-      answer: fields[1] as String,
+    return ResultsHive(
+      correct: fields[0] as num?,
+      wrong: fields[1] as num?,
+      total: fields[2] as String?,
+      subjectId: fields[3] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, HiveAnswers obj) {
+  void write(BinaryWriter writer, ResultsHive obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.questionId)
+      ..write(obj.correct)
       ..writeByte(1)
-      ..write(obj.answer);
+      ..write(obj.wrong)
+      ..writeByte(2)
+      ..write(obj.total)
+      ..writeByte(3)
+      ..write(obj.subjectId);
   }
 
   @override
@@ -38,7 +44,7 @@ class HiveAnswersAdapter extends TypeAdapter<HiveAnswers> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveAnswersAdapter &&
+      other is ResultsHiveAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -2,7 +2,7 @@ import 'package:elevate_online_exam_app/features/questions/domain/contract/repos
 import 'package:injectable/injectable.dart';
 
 import '../../../core/error_handeling/Result.dart';
-import '../data/api/model/exam_response.dart';
+import '../data/api/model/response/exam_response.dart';
 
 @injectable
 class ExamQuestionsUseCase {

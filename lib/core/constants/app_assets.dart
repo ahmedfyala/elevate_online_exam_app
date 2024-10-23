@@ -24,10 +24,8 @@ class AppSvgs {
   static const String svgsPath = 'assets/svgs';
   // static const String clockImage = '$svgsPath/clock.svg';
 
-// MARK: - ↙️ bottom app bar.
-  static const String awarenessIcon = '$svgsPath/awareness-icon.svg';
-  static const String riskcalCulatorIcon = '$svgsPath/calculator-icon.svg';
-  static const String profileIcon = '$svgsPath/profile-icon.svg';
-  static const String resultsIcon = '$svgsPath/carbon_result-draft.svg';
-  static const String diagnosisIcon = '$svgsPath/diagnosis-icon.svg';
+  // MARK: - ↙️ bottom app bar.
+  static const String profileIcon = '$svgsPath/profile.svg';
+  static const String resultsIcon = '$svgsPath/results.svg';
+  static const String exploreIcon = '$svgsPath/home.svg';
 }

@@ -11,6 +11,7 @@ import 'package:injectable/injectable.dart';
 @injectable
 class RegisterViewModel extends Cubit<RegisterScreenState> {
   final RegisterUseCase _registerUseCase;
+
   RegisterViewModel(this._registerUseCase) : super(InitialState());
   TextEditingController userNameController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
@@ -23,6 +24,7 @@ class RegisterViewModel extends Cubit<RegisterScreenState> {
   bool isPasswordVisible = true;
   bool isRePasswordVisible = true;
   bool validate = false;
+
   void doAction(RegisterScreenActions action) {
     switch (action) {
       case RegisterAction():

@@ -1,6 +1,8 @@
+import 'package:elevate_online_exam_app/features/questions/domain/model/hive_selected_answers.dart';
+
 class AnswerModel {
-  final String questionId;
-  final String selectedAnswer;
+  final String? questionId;
+  late final String? selectedAnswer;
 
   AnswerModel({required this.questionId, required this.selectedAnswer});
 
@@ -9,5 +11,19 @@ class AnswerModel {
       'questionId': questionId,
       'selectedAnswer': selectedAnswer,
     };
+  }
+
+  toAnswerRequest() {
+    return {
+      'qid': questionId,
+      'answer': selectedAnswer,
+    };
+  }
+
+  SelectedAnswersHive toHiveSelectedAnswers() {
+    return SelectedAnswersHive(
+      questionId: questionId,
+      selectedAnswer: selectedAnswer,
+    );
   }
 }
