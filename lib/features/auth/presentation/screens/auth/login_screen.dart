@@ -35,6 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 current is PasswordVisibilityState ||
                 current is ValidateColorButtonState;
           },
+          listenWhen: (previous, current) {
+            if (previous is LoadingState || current is ErrorState) {
+              hideLoading(context);
+            }
+            return current is! InitialState;
+          },
           listener: (context, state) {
             switch (state) {
               case LoadingState():
@@ -92,6 +98,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPasswordVisible: isPasswordVisible,
                 showPassword: () {
                   loginViewModel.doAction(ShowPasswordAction());
+                },
+                goToForgetPassword: () {
+                  context.go(Routes.registerScreen);
                 },
               );
             }

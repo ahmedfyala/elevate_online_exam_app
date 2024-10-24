@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/app_strings.dart';
-import '../../../../../core/di/di.dart';
-import '../../view_models/forget_password/forget_password_view_model.dart';
 import 'body_view/otp_view_body.dart';
 
 class OtpView extends StatelessWidget {
-  const OtpView({super.key,});
+  final String? email;
+  const OtpView({
+    super.key,
+    this.email,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,9 @@ class OtpView extends StatelessWidget {
           ),
         ),
       ),
-      body: const OtpViewBody(),
+      body: OtpViewBody(
+        email: email,
+      ),
     );
   }
 }

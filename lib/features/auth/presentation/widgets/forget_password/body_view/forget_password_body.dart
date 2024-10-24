@@ -1,10 +1,15 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:elevate_online_exam_app/core/di/di.dart';
 import 'package:elevate_online_exam_app/core/helpers/validations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../../../core/constants/app_strings.dart';
+import '../../../../../../core/error_handeling/handle_error.dart';
+import '../../../../../../core/functions/show_awesome_dialoge.dart';
+import '../../../../../../core/functions/show_hide_loading.dart';
 import '../../../../../../core/routing/routes.dart';
 import '../../../../../../core/widgets/custom_auth_button.dart';
 import '../../../../../../core/widgets/custom_text_form_feild.dart';
@@ -29,18 +34,18 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
       bloc: forgetPasswordViewModel,
       listener: (context, state) {
         if (state is ForgotPasswordFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Failure")),
-          );
+          var exception = state.exception;
+          String? message = errorStateHandler(exception!);
+          showAwesomeDialog(context,
+              title: 'Error',
+              desc: message!,
+              onOk: () {},
+              dialogType: DialogType.error);
         } else if (state is ForgotPasswordLoading) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Loading")),
-          );
+          showLoading(context, 'Sending OTP...');
         } else if (state is ForgotPasswordSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Success")),
-          );
-          context.push(Routes.otpScreen);
+          context.go(Routes.otpScreen,
+              extra: forgetPasswordViewModel.emailTextEditingController.text);
         }
       },
       child: Padding(

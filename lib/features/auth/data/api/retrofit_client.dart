@@ -5,12 +5,12 @@ import 'package:elevate_online_exam_app/features/auth/data/api/model/request/Res
 import 'package:elevate_online_exam_app/features/auth/data/api/model/request/VerifyResetCodeRequest.dart';
 import 'package:elevate_online_exam_app/features/auth/data/api/model/response/ResetPasswordResponse.dart';
 import 'package:elevate_online_exam_app/features/auth/data/api/model/response/VerifyResetCodeResponse.dart';
-import 'package:elevate_online_exam_app/features/auth/data/api/model/response/auth_response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
 import 'model/request/register_request.dart';
+import 'model/response/auth_response.dart';
 import 'model/response/forgot_password_response.dart';
 
 part 'retrofit_client.g.dart';
@@ -29,12 +29,14 @@ abstract class RetrofitClient {
   Future<AuthResponse> register(@Body() RegisterRequest body);
 
   @POST(ApiConstants.forgotPasswordApi)
-  Future<ForgotPasswordResponse> forgetPassword(@Body() ForgotPasswordRequest body);
+  Future<ForgotPasswordResponse> forgetPassword(
+      @Body() ForgotPasswordRequest body);
 
   @POST(ApiConstants.verifyResetCodeApi)
-  Future<VerifyResetCodeResponse> verifyResetCode(@Body() VerifyResetCodeRequest body);
+  Future<VerifyResetCodeResponse> verifyResetCode(
+      @Body() VerifyResetCodeRequest body);
 
   @PUT(ApiConstants.resetPasswordApi)
-  Future<ResetPasswordResponse> resetPassword(@Body() ResetPasswordRequest body);
-
+  Future<ResetPasswordResponse> resetPassword(
+      @Body() ResetPasswordRequest body);
 }

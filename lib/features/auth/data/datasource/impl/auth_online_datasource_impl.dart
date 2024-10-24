@@ -29,10 +29,9 @@ class AuthOnlineDatasourceImpl extends AuthOnlineDataSource {
           "email": email,
           "password": password,
         });
-        var appUser = AppUser(
-          email: email,
-          token: result.token,
-        );
+
+        var appUser = result.user!.toAppUser();
+        appUser.token = result.token;
         return Success(data: appUser);
       },
     );
@@ -43,13 +42,8 @@ class AuthOnlineDatasourceImpl extends AuthOnlineDataSource {
     return executeApi<AppUser>(
       () async {
         var result = await retrofitClient.register(registerRequest);
-        var appUser = AppUser(
-          firstName: registerRequest.firstName,
-          lastName: registerRequest.lastName,
-          phoneNumber: registerRequest.phone,
-          email: registerRequest.email,
-          token: result.token,
-        );
+        var appUser = result.user!.toAppUser();
+        appUser.token = result.token;
         return Success(data: appUser);
       },
     );
