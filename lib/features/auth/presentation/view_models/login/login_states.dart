@@ -29,3 +29,5 @@ class PasswordVisibilityState extends LoginScreenState {
 class GoToRegisterState extends LoginScreenState {}
 
 class ValidateColorButtonState extends LoginScreenState {}
+
+class NavigateToFogotPasswordState extends LoginScreenState {}

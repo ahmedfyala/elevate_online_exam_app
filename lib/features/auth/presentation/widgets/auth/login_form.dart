@@ -19,6 +19,7 @@ class LoginForm extends StatelessWidget {
     this.isPasswordVisible,
     required this.goToHome,
     required this.goToRegister,
+    required this.goToForgetPassword,
   });
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -29,6 +30,7 @@ class LoginForm extends StatelessWidget {
   final bool? isPasswordVisible;
   final void Function()? goToHome;
   final void Function()? goToRegister;
+  final void Function()? goToForgetPassword;
 
   @override
   Widget build(BuildContext context) {

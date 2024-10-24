@@ -11,6 +11,8 @@ class Routes {
 
   // MARK: - 🏠 Home.
   static const String homeScreen = "/homeScreen";
+  static const String examQuestionsScreen = "/examQuestionsScreen";
+  static const String examScoreScreen = "/examScoreScreen";
   // // MARK: - 👤 Profile.
   static const String profileScreen = "/profileScreen";
   static const String editProfileScreen = "/editProfileScreen";
@@ -21,5 +23,4 @@ class Routes {
   // static const String aboutUsScreen = "/aboutUsScreen";
   // static const String contactUsScreen = "/contactUsScreen";
   // static const String faqScreen = "/faqScreen";
-
 }

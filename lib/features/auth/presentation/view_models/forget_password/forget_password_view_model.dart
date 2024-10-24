@@ -7,6 +7,7 @@ import 'package:elevate_online_exam_app/features/auth/usecases/resetPassword.dar
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../data/api/model/request/ForgotPasswordRequest.dart';
 import '../../../data/api/model/request/ResetPasswordRequest.dart';
 import '../../../data/api/model/request/VerifyResetCodeRequest.dart';
@@ -16,8 +17,8 @@ import 'forget_password_state.dart';
 
 @injectable
 class ForgetPasswordViewModel extends Cubit<ForgotPasswordState> {
-  ForgetPasswordViewModel(
-      this.forgetPasswordUseCase, this.verifyResetCodeUseCase,this.resetPasswordUseCase)
+  ForgetPasswordViewModel(this.forgetPasswordUseCase,
+      this.verifyResetCodeUseCase, this.resetPasswordUseCase)
       : super(ForgotPasswordInitial());
   ForgetPasswordUseCase forgetPasswordUseCase;
   VerifyResetCodeUseCase verifyResetCodeUseCase;
@@ -25,11 +26,11 @@ class ForgetPasswordViewModel extends Cubit<ForgotPasswordState> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController otpCode = TextEditingController();
   TextEditingController resetPasswordController = TextEditingController();
-  TextEditingController confirmResetPasswordController = TextEditingController();
+  TextEditingController confirmResetPasswordController =
+      TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  void doAction(ForgetPasswordAction action) {
+  void doAction(ForgetPasswordAction action, {String? email}) {
     switch (action) {
       case ForgetPassword():
         _forgetPassword();
@@ -37,11 +38,15 @@ class ForgetPasswordViewModel extends Cubit<ForgotPasswordState> {
       case SendOTP():
         _verifyResetCode();
         break;
-
       case ResetPassword():
-      _resetPassword();
-      break;
+        if (email != null) {
+          _resetPassword(email);
+        } else {
+          emit(ResetPasswordFailure(Exception("Email is null")));
+        }
+        break;
       case VerifyOTP():
+      // Handle OTP verification if needed
     }
   }
 
@@ -59,7 +64,6 @@ class ForgetPasswordViewModel extends Cubit<ForgotPasswordState> {
           emit(ForgotPasswordFailure(response.exception));
           break;
         case Loading<ForgotPasswordResponse>():
-
       }
     }
   }
@@ -75,30 +79,31 @@ class ForgetPasswordViewModel extends Cubit<ForgotPasswordState> {
           emit(OTPSentSuccess());
           break;
         case Fail<VerifyResetCodeResponse>():
-          OTPSentFailure(response.exception);
+          emit(OTPSentFailure(response.exception));
           break;
         case Loading<VerifyResetCodeResponse>():
+        // You can add a loading state if necessary
       }
     }
   }
 
-  void _resetPassword() async {
+  void _resetPassword(String email) async {
     if (formKey.currentState!.validate()) {
       emit(ResetPasswordLoading());
       var response = await resetPasswordUseCase.invoke(ResetPasswordRequest(
-        email: "afyala115@gmail.com",
+        email: email, // Ensure the email is passed
         newPassword: resetPasswordController.text,
       ));
-      print("-----------------------------------------------------------${response}");
 
       switch (response) {
-
         case Success<ResetPasswordResponse>():
-         emit(ResetPasswordSuccess());
+          emit(ResetPasswordSuccess());
+          break;
         case Fail<ResetPasswordResponse>():
           emit(ResetPasswordFailure(response.exception));
+          break;
         case Loading<ResetPasswordResponse>():
-
+        // Optional: Handle loading state here
       }
     }
   }

@@ -20,14 +20,23 @@ class AuthRepositoryImpl implements AuthRepo {
   AuthRepositoryImpl(this.authOfflineDataSource, this.authOnlineDataSource);
   @override
   Future<Result<AppUser>> login(String email, String password) async {
-    return authOnlineDataSource.login(email, password);
+    var result = await authOnlineDataSource.login(
+      email,
+      password,
+    );
+    if (result is Success<AppUser>) {
+      await authOfflineDataSource.saveUser(result.data!);
+    }
+    return result;
   }
 
   @override
   Future<Result<AppUser>> register(RegisterRequest registerRequest) async {
-    return authOnlineDataSource.register(
-      registerRequest,
-    );
+    var result = await authOnlineDataSource.register(registerRequest);
+    if (result is Success<AppUser>) {
+      await authOfflineDataSource.saveUser(result.data!);
+    }
+    return result;
   }
 
   @override

@@ -1,11 +1,11 @@
 import 'package:elevate_online_exam_app/core/helpers/validations.dart';
-import 'package:elevate_online_exam_app/core/widgets/custom_auth_button.dart';
 import 'package:elevate_online_exam_app/features/auth/presentation/view_models/forget_password/forget_password_action.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
 import '../../../../../../core/constants/app_strings.dart';
 import '../../../../../../core/di/di.dart';
 import '../../../../../../core/routing/routes.dart';
@@ -13,8 +13,10 @@ import '../../../view_models/forget_password/forget_password_state.dart';
 import '../../../view_models/forget_password/forget_password_view_model.dart';
 
 class OtpViewBody extends StatefulWidget {
+  final String? email;
   const OtpViewBody({
     super.key,
+    this.email,
   });
 
   @override
@@ -24,6 +26,7 @@ class OtpViewBody extends StatefulWidget {
 class _OtpViewBodyState extends State<OtpViewBody> {
   ForgetPasswordViewModel forgetPasswordViewModel =
       getIt<ForgetPasswordViewModel>();
+
   bool finished = false;
 
   int otpLength = 0;
@@ -34,14 +37,18 @@ class _OtpViewBodyState extends State<OtpViewBody> {
       bloc: forgetPasswordViewModel,
       listener: (context, state) {
         if (state is OTPSentSuccess) {
-          context.push(Routes.resetPasswordScreen);
+          context.go(
+            Routes.resetPasswordScreen,
+            extra: widget.email,
+          );
         } else if (state is OTPSentLoading) {
           const SnackBar(
             content: Text("Loading"),
           );
         } else if (state is OTPSentFailure) {
           const SnackBar(
-              content: Text("error"),);
+            content: Text("error"),
+          );
         }
       },
       child: Padding(

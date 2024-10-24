@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../../../core/constants/app_strings.dart';
 import '../../../../../../core/di/di.dart';
 import '../../../../../../core/routing/routes.dart';
@@ -13,7 +14,8 @@ import '../../../view_models/forget_password/forget_password_state.dart';
 import '../../../view_models/forget_password/forget_password_view_model.dart';
 
 class ResetPasswordBody extends StatefulWidget {
-  const ResetPasswordBody({super.key});
+  final String? email; // Nullable to handle the optional email
+  const ResetPasswordBody({super.key, this.email});
 
   @override
   State<ResetPasswordBody> createState() => _ResetPasswordBodyState();
@@ -31,15 +33,15 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
       listener: (context, state) {
         if (state is ResetPasswordFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Failure")),
+            const SnackBar(content: Text("Failure")),
           );
         } else if (state is ResetPasswordLoading) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Loading")),
+            const SnackBar(content: Text("Loading")),
           );
         } else if (state is ResetPasswordSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Success")),
+            const SnackBar(content: Text("Success")),
           );
           context.go(Routes.loginScreen);
         }
@@ -89,15 +91,25 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
                   });
                 },
                 validator: (value) => Validations.validateConfirmPassword(
-                    context,
-                    forgetPasswordViewModel.resetPasswordController.text,
-                    value),
+                  context,
+                  forgetPasswordViewModel.resetPasswordController.text,
+                  value,
+                ),
               ),
               SizedBox(height: 20.h),
               CustomAuthButton(
                 text: AppStrings.continueText,
                 onPressed: () {
-                  forgetPasswordViewModel.doAction(ResetPassword());
+                  if (widget.email != null) {
+                    forgetPasswordViewModel.doAction(
+                      ResetPassword(),
+                      email: widget.email!,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Email not provided")),
+                    );
+                  }
                 },
                 color: Colors.blue,
               ),
