@@ -56,10 +56,23 @@ class ExamRepositoryImpl implements ExamRepository {
     var response = await examOnlineDatasource.checkAnswers(
         user!.token!, checkAnswerRequest);
 
-    if (response is Success<CheckAnswerResponse>) {
-      return response;
-    } else {
-      return Fail(Exception('Failed to check answers'));
+    return response;
+  }
+
+  @override
+  Future<void> saveAnswersResult(
+      CheckAnswerResponse checkAnswerResponse, String subjectId) async {
+    var hiveAnswers = checkAnswerResponse.toHiveAnswers(
+        subjectId: subjectId); // pass subjectId here
+    print('exam repository ${hiveAnswers.wrong! + hiveAnswers.correct!}');
+    await examOfflineDatasource.saveAnswersResult(hiveAnswers);
+  }
+
+  @override
+  Future<void> saveSelectedAnswers(List<AnswerModel> answerModel) async {
+    for (var answer in answerModel) {
+      var hiveSelectedAnswers = answer.toHiveSelectedAnswers();
+      await examOfflineDatasource.saveSelectedAnswers(hiveSelectedAnswers);
     }
   }
 }

@@ -6,17 +6,17 @@ part of 'hive_questions.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HiveQuestionsAdapter extends TypeAdapter<HiveQuestions> {
+class QuestionHiveAdapter extends TypeAdapter<QuestionHive> {
   @override
-  final int typeId = 1;
+  final int typeId = 8;
 
   @override
-  HiveQuestions read(BinaryReader reader) {
+  QuestionHive read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveQuestions(
+    return QuestionHive(
       questionId: fields[0] as String?,
       question: fields[1] as String?,
       correct: fields[2] as String?,
@@ -34,13 +34,15 @@ class HiveQuestionsAdapter extends TypeAdapter<HiveQuestions> {
       secondOptionKey: fields[14] as String?,
       thirdOptionKey: fields[15] as String?,
       fourthOptionKey: fields[16] as String?,
+      examName: fields[17] as String?,
+      subjectName: fields[18] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, HiveQuestions obj) {
+  void write(BinaryWriter writer, QuestionHive obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(19)
       ..writeByte(0)
       ..write(obj.questionId)
       ..writeByte(1)
@@ -74,7 +76,11 @@ class HiveQuestionsAdapter extends TypeAdapter<HiveQuestions> {
       ..writeByte(15)
       ..write(obj.thirdOptionKey)
       ..writeByte(16)
-      ..write(obj.fourthOptionKey);
+      ..write(obj.fourthOptionKey)
+      ..writeByte(17)
+      ..write(obj.examName)
+      ..writeByte(18)
+      ..write(obj.subjectName);
   }
 
   @override
@@ -83,7 +89,7 @@ class HiveQuestionsAdapter extends TypeAdapter<HiveQuestions> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveQuestionsAdapter &&
+      other is QuestionHiveAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

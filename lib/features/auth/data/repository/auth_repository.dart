@@ -40,19 +40,25 @@ class AuthRepositoryImpl implements AuthRepo {
   }
 
   @override
-  Future<Result<ForgotPasswordResponse>> forgetPassword(ForgotPasswordRequest forgotPasswordRequest) async{
-    return authOnlineDataSource.forgetPassword(
-        forgotPasswordRequest
-    );
+  Future<Result<ForgotPasswordResponse>> forgetPassword(
+      ForgotPasswordRequest forgotPasswordRequest) async {
+    return authOnlineDataSource.forgetPassword(forgotPasswordRequest);
   }
 
   @override
-  Future<Result<VerifyResetCodeResponse>> verifyResetCode(VerifyResetCodeRequest verifyResetCodeRequest) async{
-   return authOnlineDataSource.verifyResetCode(verifyResetCodeRequest);
+  Future<Result<VerifyResetCodeResponse>> verifyResetCode(
+      VerifyResetCodeRequest verifyResetCodeRequest) async {
+    return authOnlineDataSource.verifyResetCode(verifyResetCodeRequest);
   }
 
   @override
-  Future<Result<ResetPasswordResponse>> resetPassword(ResetPasswordRequest resetPasswordRequest) {
+  Future<Result<ResetPasswordResponse>> resetPassword(
+      ResetPasswordRequest resetPasswordRequest) {
     return authOnlineDataSource.resetPassword(resetPasswordRequest);
+  }
+
+  @override
+  Future<AppUser?> getUser() async {
+    return await authOfflineDataSource.getUser();
   }
 }

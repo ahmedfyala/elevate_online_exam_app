@@ -8,4 +8,7 @@ abstract class ExamRepository {
   Future<Result<ExamResponse>> getQuestions();
   Future<Result<CheckAnswerResponse>> checkAnswer(
       List<AnswerModel> answerModel);
+  Future<void> saveAnswersResult(
+      CheckAnswerResponse checkAnswerResponse, String subjectId);
+  Future<void> saveSelectedAnswers(List<AnswerModel> answerModel);
 }

@@ -132,11 +132,20 @@ class ExamQuestionsViewmodel extends Cubit<ExamQuestionsState> {
 
   void _previousQuestion() {
     if (_questions != null && _currentQuestionIndex > 0) {
+      // Decrement the question index
       _currentQuestionIndex--;
-      selectedOption = null;
-      isAnswerCorrect = false;
-      selectedAnswers.removeLast();
 
+      // Check if a previous answer exists for the new current question
+      if (selectedAnswers.isNotEmpty) {
+        final previousAnswer = selectedAnswers[_currentQuestionIndex];
+        selectedOption =
+            previousAnswer.selectedAnswer; // Restore selected option
+      } else {
+        selectedOption =
+            null; // No answer was selected for the previous question
+      }
+
+      // Emit the updated state
       emit(SuccessState(_questions!));
     }
   }
@@ -152,19 +161,13 @@ class ExamQuestionsViewmodel extends Cubit<ExamQuestionsState> {
     } else {
       isAnswerCorrect = false;
     }
-
+    print('Selected option: $selectedOption'); // Log the selected option
     // Add or update the selected answer
     final answerIndex = selectedAnswers
         .indexWhere((answer) => answer.questionId == currentQuestion?.id);
     if (answerIndex != -1) {
       // Update the existing answer
       selectedAnswers[answerIndex].selectedAnswer = option;
-    } else {
-      // Add a new answer
-      if (currentQuestion?.id != null) {
-        // Ensure question ID is not null
-        _addAnswer(_questions?[currentQuestionIndex].id, option);
-      }
     }
 
     // Emit the selected option and correctness state
@@ -172,6 +175,20 @@ class ExamQuestionsViewmodel extends Cubit<ExamQuestionsState> {
   }
 
   void _submitExam() {
+    if (selectedOption != null) {
+      final lastQuestion = _questions?[_currentQuestionIndex];
+      final answerIndex = selectedAnswers.indexWhere(
+        (answer) => answer.questionId == lastQuestion?.id,
+      );
+      if (answerIndex == -1) {
+        final answer = AnswerModel(
+          questionId: lastQuestion?.id,
+          selectedAnswer: selectedOption!,
+        );
+        selectedAnswers.add(answer);
+      }
+    }
+
     emit(FinishState());
   }
 }

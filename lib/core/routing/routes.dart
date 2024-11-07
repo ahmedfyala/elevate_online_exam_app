@@ -13,6 +13,7 @@ class Routes {
   static const String homeScreen = "/homeScreen";
   static const String examQuestionsScreen = "/examQuestionsScreen";
   static const String examScoreScreen = "/examScoreScreen";
+  static const String questionsResultScreen = "/questionsResultScreen";
   // // MARK: - 👤 Profile.
   static const String profileScreen = "/profileScreen";
   static const String editProfileScreen = "/editProfileScreen";

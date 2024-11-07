@@ -1,9 +1,10 @@
+import 'package:elevate_online_exam_app/features/results/data/model/question_model.dart';
 import 'package:hive/hive.dart';
 
 part 'hive_questions.g.dart';
 
-@HiveType(typeId: 1)
-class HiveQuestions {
+@HiveType(typeId: 8)
+class QuestionHive {
   @HiveField(0)
   String? questionId;
   @HiveField(1)
@@ -38,8 +39,12 @@ class HiveQuestions {
   String? thirdOptionKey;
   @HiveField(16)
   String? fourthOptionKey;
+  @HiveField(17)
+  String? examName;
+  @HiveField(18)
+  String? subjectName;
 
-  HiveQuestions({
+  QuestionHive({
     this.questionId,
     this.question,
     this.correct,
@@ -57,5 +62,28 @@ class HiveQuestions {
     this.secondOptionKey,
     this.thirdOptionKey,
     this.fourthOptionKey,
+    this.examName,
+    this.subjectName,
   });
+
+  QuestionModel toQuestionModel() {
+    return QuestionModel(
+      questionId: questionId,
+      question: question,
+      correct: correct,
+      subjectId: subjectId,
+      examId: examId,
+      duration: duration,
+      firstOption: firstOption,
+      secondOption: secondOption,
+      thirdOption: thirdOption,
+      fourthOption: fourthOption,
+      firstOptionKey: firstOptionKey,
+      secondOptionKey: secondOptionKey,
+      thirdOptionKey: thirdOptionKey,
+      fourthOptionKey: fourthOptionKey,
+      examName: examName,
+      subjectName: subjectName,
+    );
+  }
 }

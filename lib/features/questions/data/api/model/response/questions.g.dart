@@ -12,10 +12,14 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
           .toList(),
       type: json['type'] as String,
       id: json['_id'] as String,
-      question: json['question'] as String,
-      correct: json['correct'] as String,
-      subject: Subject.fromJson(json['subject'] as Map<String, dynamic>),
-      exam: Exam.fromJson(json['exam'] as Map<String, dynamic>),
+      question: json['question'] as String?,
+      correct: json['correct'] as String?,
+      subject: json['subject'] == null
+          ? null
+          : Subject.fromJson(json['subject'] as Map<String, dynamic>),
+      exam: json['exam'] == null
+          ? null
+          : Exam.fromJson(json['exam'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String?,
     );
 

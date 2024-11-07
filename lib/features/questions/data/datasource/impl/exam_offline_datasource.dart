@@ -1,8 +1,10 @@
+import 'package:elevate_online_exam_app/features/questions/domain/model/hive_answers.dart';
 import 'package:elevate_online_exam_app/features/questions/domain/model/hive_questions.dart';
-import 'package:flutter/foundation.dart';
+import 'package:elevate_online_exam_app/features/questions/domain/model/hive_selected_answers.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/di/hive_module.dart';
 import '../../api/model/response/answers.dart';
 import '../../api/model/response/exam.dart';
 import '../../api/model/response/questions.dart';
@@ -11,27 +13,35 @@ import '../contract/exam_datasource.dart';
 
 @Injectable(as: ExamOfflineDatasource)
 class ExamOfflineDataSourceImpl implements ExamOfflineDatasource {
-  final Box<HiveQuestions> _hiveBox;
+  final HiveModule _hiveModule;
 
-  ExamOfflineDataSourceImpl(this._hiveBox);
+  // Inject the HiveModule
+  ExamOfflineDataSourceImpl(this._hiveModule);
 
   @override
   Future<List<Question>> getQuestions() async {
-    final hiveQuestions = _hiveBox.values.toList();
+    final Box<QuestionHive> hiveBox = _hiveModule.questionsBox;
+    final hiveQuestions = hiveBox.values.toList();
+
     return hiveQuestions
         .map((hiveQuestion) => Question(
-              id: hiveQuestion.questionId ??
-                  '', // Provide fallback value if null
-              question: hiveQuestion.question ?? '', // Provide fallback value
-              correct: hiveQuestion.correct ?? '', // Provide fallback value
-              type: hiveQuestion.type ?? '', // Provide fallback value
+              id: hiveQuestion.questionId ?? '',
+              question: hiveQuestion.question ?? '',
+              correct: hiveQuestion.correct ?? '',
+              type: hiveQuestion.type ?? '',
               subject: hiveQuestion.subjectId != null
-                  ? Subject(id: hiveQuestion.subjectId!)
-                  : null, // Handle nullable subjectId
+                  ? Subject(
+                      id: hiveQuestion.subjectId!,
+                      name: hiveQuestion.subjectName,
+                    )
+                  : null,
               exam: hiveQuestion.examId != null
                   ? Exam(
-                      id: hiveQuestion.examId!, duration: hiveQuestion.duration)
-                  : null, // Handle nullable examId and duration
+                      id: hiveQuestion.examId!,
+                      duration: hiveQuestion.duration,
+                      title: hiveQuestion.examName,
+                    )
+                  : null,
               answers: [
                 Answers(
                     answer: hiveQuestion.firstOption ?? '',
@@ -52,18 +62,9 @@ class ExamOfflineDataSourceImpl implements ExamOfflineDatasource {
 
   @override
   Future<void> saveQuestions(Question question) async {
-    // Convert the question ID to a string (or ensure it's a valid key type)
     final questionId = question.id.toString();
+    final Box<QuestionHive> hiveBox = _hiveModule.questionsBox;
 
-    // Check if the question already exists in the Hive box
-    if (_hiveBox.containsKey(questionId)) {
-      if (kDebugMode) {
-        print('Question with id $questionId already exists, skipping save.');
-      }
-      return; // Skip saving if it already exists
-    }
-
-    // Safely access the list of answers and handle cases where the list is null or contains fewer than 4 answers
     final firstAnswer =
         question.answers.isNotEmpty ? question.answers[0].answer : null;
     final secondAnswer =
@@ -82,8 +83,7 @@ class ExamOfflineDataSourceImpl implements ExamOfflineDatasource {
     final fourthKey =
         question.answers.length > 3 ? question.answers[3].key : null;
 
-    // Map the data to HiveQuestions
-    final hiveQuestion = HiveQuestions(
+    final hiveQuestion = QuestionHive(
       questionId: question.id,
       question: question.question,
       correct: question.correct,
@@ -99,10 +99,45 @@ class ExamOfflineDataSourceImpl implements ExamOfflineDatasource {
       secondOptionKey: secondKey,
       thirdOptionKey: thirdKey,
       fourthOptionKey: fourthKey,
+      subjectName: question.subject?.name,
+      examName: question.exam?.title,
     );
 
-    // Save the question in Hive
-    await _hiveBox.put(questionId, hiveQuestion);
+    await hiveBox.put(questionId, hiveQuestion);
     print('Saved question with id $questionId');
+  }
+
+  @override
+  Future<List<ResultsHive>> getAnswersResult() async {
+    final Box<ResultsHive> answersBox = _hiveModule.answersBox;
+    return answersBox.values.toList();
+  }
+
+  @override
+  Future<void> saveAnswersResult(ResultsHive hiveAnswers) async {
+    print(
+        'exam offline datasource saveAnswersResult${hiveAnswers.wrong! + hiveAnswers.correct!}');
+    final Box<ResultsHive> answersBox = _hiveModule.answersBox;
+    final hiveAnswersId = hiveAnswers.subjectId.toString();
+    answersBox.delete(hiveAnswersId);
+    await answersBox.put(hiveAnswersId, hiveAnswers);
+  }
+
+  @override
+  Future<List<SelectedAnswersHive>> getSelectedAnswers() async {
+    final Box<SelectedAnswersHive> selectedAnswersBox =
+        _hiveModule.selectedAnswersBox;
+    return selectedAnswersBox.values.toList();
+  }
+
+  @override
+  Future<void> saveSelectedAnswers(
+      SelectedAnswersHive hiveSelectedAnswers) async {
+    final Box<SelectedAnswersHive> selectedAnswersBox =
+        _hiveModule.selectedAnswersBox;
+    final hiveSelectedAnswersId = hiveSelectedAnswers.questionId.toString();
+
+    await selectedAnswersBox.put(hiveSelectedAnswersId, hiveSelectedAnswers);
+    print('Saved selected answers with id $hiveSelectedAnswersId');
   }
 }

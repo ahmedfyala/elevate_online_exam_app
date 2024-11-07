@@ -11,9 +11,11 @@ CheckAnswerRequest _$CheckAnswerRequestFromJson(Map<String, dynamic> json) =>
       answers: (json['answers'] as List<dynamic>?)
           ?.map((e) => AnswersRequest.fromJson(e as Map<String, dynamic>))
           .toList(),
+      time: (json['time'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CheckAnswerRequestToJson(CheckAnswerRequest instance) =>
     <String, dynamic>{
       'answers': instance.answers,
+      'time': instance.time,
     };
