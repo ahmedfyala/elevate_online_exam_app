@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 import '../../../domain/model/answer_model.dart';
 
 @injectable
-class CheckAnswerViewModel extends Cubit<CheckAnswerState> {
+class CheckAnswerViewModel extends Cubit<CheckAnswerState> {}
   final CheckAnswersUseCase _checkAnswersUseCase;
   CheckAnswerViewModel(this._checkAnswersUseCase) : super(CheckAnswerInitial());
 
@@ -46,4 +46,3 @@ class CheckAnswerViewModel extends Cubit<CheckAnswerState> {
       emit(CheckAnswerError(Exception(e.toString())));
     }
   }
-}

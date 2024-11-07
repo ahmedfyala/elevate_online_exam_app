@@ -26,4 +26,11 @@ class AnswerModel {
       selectedAnswer: selectedAnswer,
     );
   }
+
+  toAnswerRequest() {
+    return {
+      'qid': questionId,
+      'answer': selectedAnswer,
+    };
+  }
 }
